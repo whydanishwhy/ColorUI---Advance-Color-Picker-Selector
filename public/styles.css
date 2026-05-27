@@ -1,0 +1,31 @@
+
+  .no-select {
+    user-select: none !important;
+  }
+ /* Chrome, Edge, Safari */
+ .draginput input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.draginput  input[type="number"] {
+  -moz-appearance: textfield;
+}
+/* Hide scrollbars globally but allow scrolling */
+html, body {
+  overflow: auto;              /* allow scrolling */
+  
+  /* Firefox */
+  scrollbar-width: none;       /* hides scrollbar in Firefox */
+  
+  /* IE 10+ */
+  -ms-overflow-style: none;    /* hides scrollbar in IE and Edge Legacy */
+}
+
+/* WebKit browsers: Chrome, Safari, Edge Chromium */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;               /* hides scrollbar in Chrome, Safari, Edge */
+}

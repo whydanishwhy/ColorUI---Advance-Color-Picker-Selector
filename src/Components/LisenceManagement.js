@@ -1,0 +1,241 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useEffect, useState } from "react";
+import { baseURL } from "../UI-Models/Constant";
+const LicenseManagement = () => {
+    /* ───────────────────────────────
+       THEME (EDIT EVERYTHING HERE)
+    ─────────────────────────────── */
+    const theme = {
+        bg: "#0f0f10",
+        card: "#171718",
+        soft: "#1d1d1f",
+        border: "#2b2b2e",
+        text: "#ffffff",
+        sub: "#8f8f95",
+        green: "#49d17c",
+        red: "#ff5e5e",
+        accent: "#3B9D55",
+        disabled: "#3a3a3f",
+    };
+    const MAX_DEVICES = 2;
+    /* ─────────────────────────────── */
+    const [licenseKey, setLicenseKey] = useState("");
+    const [activeKey, setActiveKey] = useState(null);
+    const [deviceId] = useState("Device-" + Math.random().toString(36).slice(2, 7).toUpperCase());
+    const [loading, setLoading] = useState("idle");
+    const [blockedDevices, setBlockedDevices] = useState([]);
+    const [status, setStatus] = useState({ type: "idle", text: "" });
+    const isBusy = loading !== "idle";
+    const isOverLimit = blockedDevices.length > MAX_DEVICES;
+    /* ───────────────────────────────
+       STORAGE SYNC
+    ─────────────────────────────── */
+    useEffect(() => {
+        var _a;
+        (_a = chrome === null || chrome === void 0 ? void 0 : chrome.storage) === null || _a === void 0 ? void 0 : _a.local.get(["active-license"], (res) => {
+            if (res["active-license"])
+                setActiveKey(res["active-license"]);
+        });
+    }, []);
+    useEffect(() => {
+        var _a;
+        if (!((_a = chrome === null || chrome === void 0 ? void 0 : chrome.storage) === null || _a === void 0 ? void 0 : _a.local))
+            return;
+        if (activeKey) {
+            chrome.storage.local.set({ "active-license": activeKey });
+        }
+        else {
+            chrome.storage.local.remove("active-license");
+        }
+    }, [activeKey]);
+    /* ─────────────────────────────── */
+    const formatKey = (value) => {
+        var _a;
+        return ((_a = value
+            .replace(/[^a-zA-Z0-9]/g, "")
+            .toUpperCase()
+            .slice(0, 16)
+            .match(/.{1,4}/g)) === null || _a === void 0 ? void 0 : _a.join("-")) || "";
+    };
+    /* ───────────────────────────────
+       ACTIVATE LICENSE
+    ─────────────────────────────── */
+    const activateLicense = async () => {
+        if (!licenseKey.trim()) {
+            setStatus({ type: "error", text: "Enter license key." });
+            return;
+        }
+        try {
+            setLoading("activate");
+            setStatus({ type: "idle", text: "" });
+            const res = await fetch(`${baseURL}/activate`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ licenseKey, deviceId }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setActiveKey(licenseKey);
+                setStatus({ type: "success", text: "License activated successfully." });
+            }
+            else {
+                setStatus({ type: "error", text: data.message || "Activation failed." });
+                setBlockedDevices(data.activatedDevices || []);
+            }
+        }
+        catch (_a) {
+            setStatus({ type: "error", text: "Server error." });
+        }
+        finally {
+            setLoading("idle");
+        }
+    };
+    /* ───────────────────────────────
+       REMOVE LICENSE (LOCAL)
+    ─────────────────────────────── */
+    const removeLocalLicense = async () => {
+        try {
+            setLoading("remove");
+            setStatus({ type: "idle", text: "" });
+            await new Promise((r) => setTimeout(r, 700));
+            setActiveKey(null);
+            setLicenseKey("");
+            setBlockedDevices([]);
+            setStatus({ type: "success", text: "License removed from device." });
+        }
+        finally {
+            setLoading("idle");
+        }
+    };
+    /* ───────────────────────────────
+       REMOVE DEVICE SLOT
+    ─────────────────────────────── */
+    const removeServerSlot = async (time) => {
+        try {
+            setLoading("device");
+            const res = await fetch(`${baseURL}/deactivate`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ licenseKey, time }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setBlockedDevices(data.remaining || []);
+                setStatus({ type: "success", text: "Device removed successfully." });
+            }
+            else {
+                setStatus({ type: "error", text: data.message || "Failed." });
+            }
+        }
+        catch (_a) {
+            setStatus({ type: "error", text: "Server error." });
+        }
+        finally {
+            setLoading("idle");
+        }
+    };
+    /* ───────────────────────────────
+       SPINNER
+    ─────────────────────────────── */
+    const Spinner = () => (_jsx("span", { style: {
+            width: 14,
+            height: 14,
+            border: "2px solid rgba(0,0,0,0.2)",
+            borderTop: "2px solid rgba(0,0,0,0.9)",
+            borderRadius: "50%",
+            display: "inline-block",
+            animation: "spin 0.7s linear infinite",
+        } }));
+    const btn = {
+        border: "none",
+        borderRadius: 14,
+        padding: "13px 16px",
+        fontWeight: 700,
+        cursor: "pointer",
+        fontSize: 14,
+        transition: "0.2s",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 8,
+    };
+    /* ─────────────────────────────── */
+    return (_jsx("div", { style: {
+            background: theme.bg,
+            display: "flex",
+            justifyContent: "center",
+            padding: 20,
+            fontFamily: "Inter",
+        }, children: _jsxs("div", { style: {
+                width: "100%",
+                maxWidth: 420,
+                background: theme.card,
+                border: `1px solid ${theme.border}`,
+                borderRadius: 24,
+                padding: 26,
+            }, children: [activeKey && (_jsxs("div", { style: {
+                        padding: 16,
+                        borderRadius: 14,
+                        marginBottom: 16,
+                        background: "rgba(73,209,124,0.08)",
+                        border: "1px solid rgba(73,209,124,0.25)",
+                    }, children: [_jsx("div", { style: { color: theme.green, fontWeight: 800 }, children: "License Active" }), _jsx("div", { style: {
+                                color: theme.text,
+                                fontWeight: 700,
+                                letterSpacing: 2,
+                                marginTop: 6,
+                            }, children: activeKey })] })), !activeKey && (_jsxs(_Fragment, { children: [_jsx("h2", { style: { color: theme.text }, children: "Activate License" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(formatKey(e.target.value)), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {
+                                width: "100%",
+                                marginTop: 12,
+                                padding: 12,
+                                borderRadius: 14,
+                                background: theme.soft,
+                                border: `1px solid ${theme.border}`,
+                                color: theme.text,
+                                textAlign: "center",
+                                letterSpacing: 2,
+                            } }), _jsxs("div", { style: {
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                gap: 10,
+                                marginTop: 16,
+                            }, children: [_jsx("button", { onClick: activateLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { background: isBusy ? theme.disabled : theme.accent, color: "#000" }), children: loading === "activate" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Activating"] })) : ("Activate") }), _jsx("button", { disabled: true, style: Object.assign(Object.assign({}, btn), { background: theme.soft, color: theme.sub, border: `1px solid ${theme.border}` }), children: "Buy" })] })] })), activeKey && isOverLimit && (_jsxs("div", { style: {
+                        marginTop: 16,
+                        padding: 12,
+                        borderRadius: 12,
+                        background: "rgba(255,94,94,0.08)",
+                        border: "1px solid rgba(255,94,94,0.2)",
+                        color: theme.red,
+                        fontWeight: 700,
+                    }, children: ["\u26A0 Device limit exceeded (", blockedDevices.length, "/", MAX_DEVICES, ")"] })), blockedDevices.length > 0 && (_jsxs("div", { style: { marginTop: 22 }, children: [_jsxs("div", { style: {
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: 12,
+                                color: theme.text,
+                                fontWeight: 700,
+                            }, children: [_jsx("span", { children: "Active Devices" }), _jsxs("span", { style: {
+                                        color: isOverLimit ? theme.red : theme.sub,
+                                        fontSize: 12,
+                                    }, children: [blockedDevices.length, "/", MAX_DEVICES] })] }), blockedDevices.map((d, i) => (_jsxs("div", { style: {
+                                padding: 14,
+                                borderRadius: 14,
+                                background: theme.soft,
+                                border: `1px solid ${theme.border}`,
+                                marginBottom: 10,
+                            }, children: [_jsx("div", { style: { color: theme.text, fontSize: 13 }, children: d.userAgent }), _jsx("div", { style: { color: theme.sub, fontSize: 12 }, children: d.time }), _jsx("button", { onClick: () => removeServerSlot(d.time), disabled: isBusy, style: Object.assign(Object.assign({}, btn), { marginTop: 10, padding: "8px 10px", fontSize: 12, background: loading === "device" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "device" ? "Removing..." : "Remove Device" })] }, i)))] })), activeKey && (_jsx("button", { onClick: removeLocalLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { width: "100%", marginTop: 18, background: loading === "remove" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "remove" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Removing License"] })) : ("Delete License") })), status.text && (_jsx("div", { style: {
+                        marginTop: 16,
+                        padding: 12,
+                        borderRadius: 12,
+                        background: status.type === "success"
+                            ? "rgba(73,209,124,0.1)"
+                            : "rgba(255,94,94,0.1)",
+                        color: status.type === "success" ? theme.green : theme.red,
+                        fontWeight: 600,
+                    }, children: status.text })), _jsx("style", { children: `
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        ` })] }) }));
+};
+export default LicenseManagement;

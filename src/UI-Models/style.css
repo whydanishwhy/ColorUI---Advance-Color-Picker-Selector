@@ -1,0 +1,26 @@
+
+.no-select {
+    user-select: none !important;
+  }
+ /* Chrome, Edge, Safari */
+ .draginput input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.draginput  input[type="number"] {
+  -moz-appearance: textfield;
+}
+.hide-scrollbar {
+  overflow: auto;           /* allow scrolling */
+  
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari, Edge) */
+  scrollbar-width: none;    /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}

@@ -1,0 +1,437 @@
+import React, { useEffect, useState } from "react";
+import { baseURL } from "../UI-Models/Constant";
+
+type ActivatedDevice = {
+  licenseKey: string;
+  time: string;
+  userAgent: string;
+};
+
+const LicenseManagement = () => {
+  /* ───────────────────────────────
+     THEME (EDIT EVERYTHING HERE)
+  ─────────────────────────────── */
+  const theme = {
+    bg: "#0f0f10",
+    card: "#171718",
+    soft: "#1d1d1f",
+    border: "#2b2b2e",
+    text: "#ffffff",
+    sub: "#8f8f95",
+    green: "#49d17c",
+    red: "#ff5e5e",
+    accent: "#3B9D55",
+    disabled: "#3a3a3f",
+  };
+
+  const MAX_DEVICES = 2;
+
+  /* ─────────────────────────────── */
+  const [licenseKey, setLicenseKey] = useState("");
+  const [activeKey, setActiveKey] = useState<string | null>(null);
+
+  const [deviceId] = useState(
+    "Device-" + Math.random().toString(36).slice(2, 7).toUpperCase()
+  );
+
+  const [loading, setLoading] = useState<
+    "idle" | "activate" | "remove" | "device"
+  >("idle");
+
+  const [blockedDevices, setBlockedDevices] = useState<ActivatedDevice[]>([]);
+
+  const [status, setStatus] = useState<{
+    type: "idle" | "success" | "error";
+    text: string;
+  }>({ type: "idle", text: "" });
+
+  const isBusy = loading !== "idle";
+  const isOverLimit = blockedDevices.length > MAX_DEVICES;
+
+  /* ───────────────────────────────
+     STORAGE SYNC
+  ─────────────────────────────── */
+  useEffect(() => {
+    chrome?.storage?.local.get(["active-license"], (res) => {
+      if (res["active-license"]) setActiveKey(res["active-license"]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!chrome?.storage?.local) return;
+
+    if (activeKey) {
+      chrome.storage.local.set({ "active-license": activeKey });
+    } else {
+      chrome.storage.local.remove("active-license");
+    }
+  }, [activeKey]);
+
+  /* ─────────────────────────────── */
+  const formatKey = (value: string) =>
+    value
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toUpperCase()
+      .slice(0, 16)
+      .match(/.{1,4}/g)
+      ?.join("-") || "";
+
+  /* ───────────────────────────────
+     ACTIVATE LICENSE
+  ─────────────────────────────── */
+  const activateLicense = async () => {
+    if (!licenseKey.trim()) {
+      setStatus({ type: "error", text: "Enter license key." });
+      return;
+    }
+
+    try {
+      setLoading("activate");
+      setStatus({ type: "idle", text: "" });
+
+      const res = await fetch(`${baseURL}/activate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ licenseKey, deviceId }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setActiveKey(licenseKey);
+        setStatus({ type: "success", text: "License activated successfully." });
+      } else {
+        setStatus({ type: "error", text: data.message || "Activation failed." });
+        setBlockedDevices(data.activatedDevices || []);
+      }
+    } catch {
+      setStatus({ type: "error", text: "Server error." });
+    } finally {
+      setLoading("idle");
+    }
+  };
+
+  /* ───────────────────────────────
+     REMOVE LICENSE (LOCAL)
+  ─────────────────────────────── */
+  const removeLocalLicense = async () => {
+    try {
+      setLoading("remove");
+      setStatus({ type: "idle", text: "" });
+
+      await new Promise((r) => setTimeout(r, 700));
+
+      setActiveKey(null);
+      setLicenseKey("");
+      setBlockedDevices([]);
+
+      setStatus({ type: "success", text: "License removed from device." });
+    } finally {
+      setLoading("idle");
+    }
+  };
+
+  /* ───────────────────────────────
+     REMOVE DEVICE SLOT
+  ─────────────────────────────── */
+  const removeServerSlot = async (time: string) => {
+    try {
+      setLoading("device");
+
+      const res = await fetch(`${baseURL}/deactivate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ licenseKey, time }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setBlockedDevices(data.remaining || []);
+        setStatus({ type: "success", text: "Device removed successfully." });
+      } else {
+        setStatus({ type: "error", text: data.message || "Failed." });
+      }
+    } catch {
+      setStatus({ type: "error", text: "Server error." });
+    } finally {
+      setLoading("idle");
+    }
+  };
+
+  /* ───────────────────────────────
+     SPINNER
+  ─────────────────────────────── */
+  const Spinner = () => (
+    <span
+      style={{
+        width: 14,
+        height: 14,
+        border: "2px solid rgba(0,0,0,0.2)",
+        borderTop: "2px solid rgba(0,0,0,0.9)",
+        borderRadius: "50%",
+        display: "inline-block",
+        animation: "spin 0.7s linear infinite",
+      }}
+    />
+  );
+
+  const btn: React.CSSProperties = {
+    border: "none",
+    borderRadius: 14,
+    padding: "13px 16px",
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: 14,
+    transition: "0.2s",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  };
+
+  /* ─────────────────────────────── */
+  return (
+    <div
+      style={{
+        background: theme.bg,
+        display: "flex",
+        justifyContent: "center",
+        padding: 20,
+        fontFamily: "Inter",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: 420,
+          background: theme.card,
+          border: `1px solid ${theme.border}`,
+          borderRadius: 24,
+          padding: 26,
+        }}
+      >
+        {/* ACTIVE STATE */}
+        {activeKey && (
+          <div
+            style={{
+              padding: 16,
+              borderRadius: 14,
+              marginBottom: 16,
+              background: "rgba(73,209,124,0.08)",
+              border: "1px solid rgba(73,209,124,0.25)",
+            }}
+          >
+            <div style={{ color: theme.green, fontWeight: 800 }}>
+              License Active
+            </div>
+            <div
+              style={{
+                color: theme.text,
+                fontWeight: 700,
+                letterSpacing: 2,
+                marginTop: 6,
+              }}
+            >
+              {activeKey}
+            </div>
+          </div>
+        )}
+
+        {/* INPUT */}
+        {!activeKey && (
+          <>
+            <h2 style={{ color: theme.text }}>Activate License</h2>
+
+            <input
+              value={licenseKey}
+              onChange={(e) => setLicenseKey(formatKey(e.target.value))}
+              placeholder="XXXX-XXXX-XXXX-XXXX"
+              disabled={isBusy}
+              style={{
+                width: "100%",
+                marginTop: 12,
+                padding: 12,
+                borderRadius: 14,
+                background: theme.soft,
+                border: `1px solid ${theme.border}`,
+                color: theme.text,
+                textAlign: "center",
+                letterSpacing: 2,
+              }}
+            />
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: 10,
+                marginTop: 16,
+              }}
+            >
+              <button
+                onClick={activateLicense}
+                disabled={isBusy}
+                style={{
+                  ...btn,
+                  background: isBusy ? theme.disabled : theme.accent,
+                  color: "#000",
+                }}
+              >
+                {loading === "activate" ? (
+                  <>
+                    <Spinner /> Activating
+                  </>
+                ) : (
+                  "Activate"
+                )}
+              </button>
+
+              <button
+                disabled
+                style={{
+                  ...btn,
+                  background: theme.soft,
+                  color: theme.sub,
+                  border: `1px solid ${theme.border}`,
+                }}
+              >
+                Buy
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* DEVICE LIMIT WARNING */}
+        {activeKey && isOverLimit && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: 12,
+              borderRadius: 12,
+              background: "rgba(255,94,94,0.08)",
+              border: "1px solid rgba(255,94,94,0.2)",
+              color: theme.red,
+              fontWeight: 700,
+            }}
+          >
+            ⚠ Device limit exceeded ({blockedDevices.length}/{MAX_DEVICES})
+          </div>
+        )}
+
+        {/* DEVICE LIST */}
+        {blockedDevices.length > 0 && (
+          <div style={{ marginTop: 22 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 12,
+                color: theme.text,
+                fontWeight: 700,
+              }}
+            >
+              <span>Active Devices</span>
+              <span
+                style={{
+                  color: isOverLimit ? theme.red : theme.sub,
+                  fontSize: 12,
+                }}
+              >
+                {blockedDevices.length}/{MAX_DEVICES}
+              </span>
+            </div>
+
+            {blockedDevices.map((d, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: 14,
+                  borderRadius: 14,
+                  background: theme.soft,
+                  border: `1px solid ${theme.border}`,
+                  marginBottom: 10,
+                }}
+              >
+                <div style={{ color: theme.text, fontSize: 13 }}>
+                  {d.userAgent}
+                </div>
+                <div style={{ color: theme.sub, fontSize: 12 }}>
+                  {d.time}
+                </div>
+
+                <button
+                  onClick={() => removeServerSlot(d.time)}
+                  disabled={isBusy}
+                  style={{
+                    ...btn,
+                    marginTop: 10,
+                    padding: "8px 10px",
+                    fontSize: 12,
+                    background:
+                      loading === "device" ? theme.disabled : theme.red,
+                    color: "#fff",
+                  }}
+                >
+                  {loading === "device" ? "Removing..." : "Remove Device"}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ALWAYS VISIBLE DELETE LICENSE (FIXED UX) */}
+        {activeKey && (
+          <button
+            onClick={removeLocalLicense}
+            disabled={isBusy}
+            style={{
+              ...btn,
+              width: "100%",
+              marginTop: 18,
+              background: loading === "remove" ? theme.disabled : theme.red,
+              color: "#fff",
+            }}
+          >
+            {loading === "remove" ? (
+              <>
+                <Spinner /> Removing License
+              </>
+            ) : (
+              "Delete License"
+            )}
+          </button>
+        )}
+
+        {/* STATUS */}
+        {status.text && (
+          <div
+            style={{
+              marginTop: 16,
+              padding: 12,
+              borderRadius: 12,
+              background:
+                status.type === "success"
+                  ? "rgba(73,209,124,0.1)"
+                  : "rgba(255,94,94,0.1)",
+              color: status.type === "success" ? theme.green : theme.red,
+              fontWeight: 600,
+            }}
+          >
+            {status.text}
+          </div>
+        )}
+
+        {/* ANIMATION */}
+        <style>{`
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+      </div>
+    </div>
+  );
+};
+
+export default LicenseManagement;

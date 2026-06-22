@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { baseURL } from "../UI-Models/Constant";
+import { Trash2 } from "lucide-react";
 
 type ActivatedDevice = {
   licenseKey: string;
@@ -176,6 +177,19 @@ const LicenseManagement = () => {
     />
   );
 
+  const getClientName = (ua: string) => {
+    const agent = ua.toLowerCase();
+  
+    if (agent.includes("thunder client")) return "Thunder Client";
+    if (agent.includes("edg")) return "Microsoft Edge";
+    if (agent.includes("chrome")) return "Chrome";
+    if (agent.includes("firefox")) return "Firefox";
+    if (agent.includes("safari") && !agent.includes("chrome")) return "Safari";
+    if (agent.includes("opera") || agent.includes("opr")) return "Opera";
+    if (agent.includes("postman")) return "Postman";
+  
+    return "Unknown Device";
+  };
   const btn: React.CSSProperties = {
     border: "none",
     borderRadius: 14,
@@ -245,7 +259,7 @@ const LicenseManagement = () => {
 
             <input
               value={licenseKey}
-              onChange={(e) => setLicenseKey(formatKey(e.target.value))}
+              onChange={(e) => setLicenseKey(e.target.value)}
               placeholder="XXXX-XXXX-XXXX-XXXX"
               disabled={isBusy}
               style={{
@@ -320,65 +334,62 @@ const LicenseManagement = () => {
         )}
 
         {/* DEVICE LIST */}
-        {blockedDevices.length > 0 && (
-          <div style={{ marginTop: 22 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 12,
-                color: theme.text,
-                fontWeight: 700,
-              }}
-            >
-              <span>Active Devices</span>
-              <span
-                style={{
-                  color: isOverLimit ? theme.red : theme.sub,
-                  fontSize: 12,
-                }}
-              >
-                {blockedDevices.length}/{MAX_DEVICES}
-              </span>
-            </div>
+        {blockedDevices.map((d, i) => (
+  <div
+    key={i}
+    style={{
+      padding: "12px 14px",
+      borderRadius: 12,
+      background: theme.soft,
+      border: `1px solid ${theme.border}`,
+      marginBottom: 8,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+    }}
+  >
+    <div>
+      <div
+        style={{
+          color: theme.text,
+          fontWeight: 600,
+          fontSize: 13,
+        }}
+      >
+        {getClientName(d.userAgent)}
+      </div>
 
-            {blockedDevices.map((d, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 14,
-                  borderRadius: 14,
-                  background: theme.soft,
-                  border: `1px solid ${theme.border}`,
-                  marginBottom: 10,
-                }}
-              >
-                <div style={{ color: theme.text, fontSize: 13 }}>
-                  {d.userAgent}
-                </div>
-                <div style={{ color: theme.sub, fontSize: 12 }}>
-                  {d.time}
-                </div>
+      <div
+        style={{
+          color: theme.sub,
+          fontSize: 11,
+          marginTop: 2,
+        }}
+      >
+        {new Date(d.time).toLocaleDateString()}
+      </div>
+    </div>
 
-                <button
-                  onClick={() => removeServerSlot(d.time)}
-                  disabled={isBusy}
-                  style={{
-                    ...btn,
-                    marginTop: 10,
-                    padding: "8px 10px",
-                    fontSize: 12,
-                    background:
-                      loading === "device" ? theme.disabled : theme.red,
-                    color: "#fff",
-                  }}
-                >
-                  {loading === "device" ? "Removing..." : "Remove Device"}
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+    <button
+      onClick={() => removeServerSlot(d.time)}
+      disabled={isBusy}
+      style={{
+        width: 34,
+        height: 34,
+        borderRadius: 10,
+        border: "none",
+        cursor: "pointer",
+        background: "rgba(255,94,94,0.12)",
+        color: theme.red,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Trash2 size={16} />
+    </button>
+  </div>
+))}
 
         {/* ALWAYS VISIBLE DELETE LICENSE (FIXED UX) */}
         {activeKey && (

@@ -26,6 +26,8 @@ function App() {
   const [active, setActive] = useState("Home");
 
   const [isKeyValid, setisKeyValid] = useState(false);
+  const [usageCount, setUsageCount] = useState(0);
+
 
   const [SettingPage, setSettingPage] = useState(false)
 
@@ -40,7 +42,7 @@ useEffect(()=>{
   // ------------------- Download / Screenshot -------------------
 
   function MakePickerResizable() {
-    const host = document.getElementById("__EXT_HOST__");
+    const host = document.getElementById("__EXT_HOST__COLORUI");
     const container = host?.shadowRoot?.querySelector("div");
 
     if (host && container) {
@@ -49,7 +51,7 @@ useEffect(()=>{
       const appContainer = host
 
       if (appContainer) {
-        interact("#__CHROMALENS_HEADER__").draggable({
+        interact("#__COLORUI_HEADER__").draggable({
           listeners: {
             move(event) {
               event.preventDefault(); 
@@ -94,8 +96,54 @@ useEffect(()=>{
     };
   }
 
+  const runEvery = async (
+    key: string,
+    days: number,
+    fn: () => Promise<void> | void
+  ) => {
+    const now = Date.now();
+  
+    chrome.storage.local.get([key], async (res) => {
+      const lastRun = res[key];
+      const interval = days * 24 * 60 * 60 * 1000;
+  
+      if (!lastRun || now - lastRun > interval) {
+        await fn();
+  
+        chrome.storage.local.set({
+          [key]: now,
+        });
+      }
+    });
+  };
+
+// For total three times in total 
+const handleAction = async () => {
+  const result = await chrome.storage.local.get(["usageCount"]);
+  const usageCount = result.usageCount || 0;
+
+  if ((isKeyValid === false || isKeyValid === null) && usageCount >= 3) {
+    alert("Limit reached");
+    console.log("Limit crossed")
+
+    return;
+  }
+
+  // Perform action
+console.log("Look im running")
 
 
+
+
+  if (isKeyValid === false || isKeyValid === null) {
+    await chrome.storage.local.set({
+      usageCount: usageCount + 1,
+    });
+  }
+};
+
+
+  
   useEffect(() => {
 
     if (typeof chrome !== "undefined" && chrome.storage?.local) {
@@ -111,6 +159,7 @@ useEffect(()=>{
 
       chrome.storage.local.get("active-license", async function (result) {
         console.log("Retrieved key: " + result.key);
+        console.log("This time is RUnnned...!")
 
         if(result.key){
 
@@ -140,20 +189,18 @@ useEffect(()=>{
       });
     };
 
-    // fetchData(); 
+     runEvery(
+      "license-refresh",
+      3,
+      async () => {
+        await fetchData(); 
+
+      }
+    );
+    
   }, []);
 
-  // useEffect(() => {
-  //   chrome.storage.local.get(
-  //     "openPickerOnRun",
-  //     ({ openPickerOnRun }) => {
-  //       if(openPickerOnRun){
 
-  //       }
-
-  //     }
-  //   );
-  // }, []);
 
   return (
     <>
@@ -164,7 +211,11 @@ useEffect(()=>{
     </div>
    <Header active={active}  isActive={isActive} setIsActive={setIsActive} setSettingPage={setSettingPage}  SettingPage={SettingPage} setActive={setActive}/>
 
-    {SettingPage?<Setting  />:<VisualEditPro isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />}
+<div onClick={handleAction}>{isKeyValid}</div>
+
+<button onClick={handleAction}> click me</button>
+
+    {SettingPage?<Setting  />:<VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />}
     
 
 

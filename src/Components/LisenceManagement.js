@@ -1,6 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useState } from "react";
 import { baseURL } from "../UI-Models/Constant";
+import { Trash2 } from "lucide-react";
 const LicenseManagement = () => {
     /* ───────────────────────────────
        THEME (EDIT EVERYTHING HERE)
@@ -146,6 +147,24 @@ const LicenseManagement = () => {
             display: "inline-block",
             animation: "spin 0.7s linear infinite",
         } }));
+    const getClientName = (ua) => {
+        const agent = ua.toLowerCase();
+        if (agent.includes("thunder client"))
+            return "Thunder Client";
+        if (agent.includes("edg"))
+            return "Microsoft Edge";
+        if (agent.includes("chrome"))
+            return "Chrome";
+        if (agent.includes("firefox"))
+            return "Firefox";
+        if (agent.includes("safari") && !agent.includes("chrome"))
+            return "Safari";
+        if (agent.includes("opera") || agent.includes("opr"))
+            return "Opera";
+        if (agent.includes("postman"))
+            return "Postman";
+        return "Unknown Device";
+    };
     const btn = {
         border: "none",
         borderRadius: 14,
@@ -184,7 +203,7 @@ const LicenseManagement = () => {
                                 fontWeight: 700,
                                 letterSpacing: 2,
                                 marginTop: 6,
-                            }, children: activeKey })] })), !activeKey && (_jsxs(_Fragment, { children: [_jsx("h2", { style: { color: theme.text }, children: "Activate License" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(formatKey(e.target.value)), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {
+                            }, children: activeKey })] })), !activeKey && (_jsxs(_Fragment, { children: [_jsx("h2", { style: { color: theme.text }, children: "Activate License" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(e.target.value), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {
                                 width: "100%",
                                 marginTop: 12,
                                 padding: 12,
@@ -207,22 +226,35 @@ const LicenseManagement = () => {
                         border: "1px solid rgba(255,94,94,0.2)",
                         color: theme.red,
                         fontWeight: 700,
-                    }, children: ["\u26A0 Device limit exceeded (", blockedDevices.length, "/", MAX_DEVICES, ")"] })), blockedDevices.length > 0 && (_jsxs("div", { style: { marginTop: 22 }, children: [_jsxs("div", { style: {
+                    }, children: ["\u26A0 Device limit exceeded (", blockedDevices.length, "/", MAX_DEVICES, ")"] })), blockedDevices.map((d, i) => (_jsxs("div", { style: {
+                        padding: "12px 14px",
+                        borderRadius: 12,
+                        background: theme.soft,
+                        border: `1px solid ${theme.border}`,
+                        marginBottom: 8,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }, children: [_jsxs("div", { children: [_jsx("div", { style: {
+                                        color: theme.text,
+                                        fontWeight: 600,
+                                        fontSize: 13,
+                                    }, children: getClientName(d.userAgent) }), _jsx("div", { style: {
+                                        color: theme.sub,
+                                        fontSize: 11,
+                                        marginTop: 2,
+                                    }, children: new Date(d.time).toLocaleDateString() })] }), _jsx("button", { onClick: () => removeServerSlot(d.time), disabled: isBusy, style: {
+                                width: 34,
+                                height: 34,
+                                borderRadius: 10,
+                                border: "none",
+                                cursor: "pointer",
+                                background: "rgba(255,94,94,0.12)",
+                                color: theme.red,
                                 display: "flex",
-                                justifyContent: "space-between",
-                                marginBottom: 12,
-                                color: theme.text,
-                                fontWeight: 700,
-                            }, children: [_jsx("span", { children: "Active Devices" }), _jsxs("span", { style: {
-                                        color: isOverLimit ? theme.red : theme.sub,
-                                        fontSize: 12,
-                                    }, children: [blockedDevices.length, "/", MAX_DEVICES] })] }), blockedDevices.map((d, i) => (_jsxs("div", { style: {
-                                padding: 14,
-                                borderRadius: 14,
-                                background: theme.soft,
-                                border: `1px solid ${theme.border}`,
-                                marginBottom: 10,
-                            }, children: [_jsx("div", { style: { color: theme.text, fontSize: 13 }, children: d.userAgent }), _jsx("div", { style: { color: theme.sub, fontSize: 12 }, children: d.time }), _jsx("button", { onClick: () => removeServerSlot(d.time), disabled: isBusy, style: Object.assign(Object.assign({}, btn), { marginTop: 10, padding: "8px 10px", fontSize: 12, background: loading === "device" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "device" ? "Removing..." : "Remove Device" })] }, i)))] })), activeKey && (_jsx("button", { onClick: removeLocalLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { width: "100%", marginTop: 18, background: loading === "remove" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "remove" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Removing License"] })) : ("Delete License") })), status.text && (_jsx("div", { style: {
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }, children: _jsx(Trash2, { size: 16 }) })] }, i))), activeKey && (_jsx("button", { onClick: removeLocalLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { width: "100%", marginTop: 18, background: loading === "remove" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "remove" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Removing License"] })) : ("Delete License") })), status.text && (_jsx("div", { style: {
                         marginTop: 16,
                         padding: 12,
                         borderRadius: 12,

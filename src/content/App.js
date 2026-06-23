@@ -9,6 +9,7 @@ import axios from "axios";
 function App() {
     const [active, setActive] = useState("Home");
     const [isKeyValid, setisKeyValid] = useState(false);
+    const [usageCount, setUsageCount] = useState(0);
     const [SettingPage, setSettingPage] = useState(false);
     const [isActive, setIsActive] = useState(false);
     useEffect(() => {
@@ -17,12 +18,12 @@ function App() {
     // ------------------- Download / Screenshot -------------------
     function MakePickerResizable() {
         var _a;
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         const container = (_a = host === null || host === void 0 ? void 0 : host.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("div");
         if (host && container) {
             const appContainer = host;
             if (appContainer) {
-                interact("#__CHROMALENS_HEADER__").draggable({
+                interact("#__COLORUI_HEADER__").draggable({
                     listeners: {
                         move(event) {
                             event.preventDefault();
@@ -57,6 +58,36 @@ function App() {
             }
         };
     }
+    const runEvery = async (key, days, fn) => {
+        const now = Date.now();
+        chrome.storage.local.get([key], async (res) => {
+            const lastRun = res[key];
+            const interval = days * 24 * 60 * 60 * 1000;
+            if (!lastRun || now - lastRun > interval) {
+                await fn();
+                chrome.storage.local.set({
+                    [key]: now,
+                });
+            }
+        });
+    };
+    // For total three times in total 
+    const handleAction = async () => {
+        const result = await chrome.storage.local.get(["usageCount"]);
+        const usageCount = result.usageCount || 0;
+        if ((isKeyValid === false || isKeyValid === null) && usageCount >= 3) {
+            alert("Limit reached");
+            console.log("Limit crossed");
+            return;
+        }
+        // Perform action
+        console.log("Look im running");
+        if (isKeyValid === false || isKeyValid === null) {
+            await chrome.storage.local.set({
+                usageCount: usageCount + 1,
+            });
+        }
+    };
     useEffect(() => {
         var _a;
         if (typeof chrome !== "undefined" && ((_a = chrome.storage) === null || _a === void 0 ? void 0 : _a.local)) {
@@ -69,6 +100,7 @@ function App() {
         const fetchData = async () => {
             chrome.storage.local.get("active-license", async function (result) {
                 console.log("Retrieved key: " + result.key);
+                console.log("This time is RUnnned...!");
                 if (result.key) {
                     try {
                         const res = await axios.post(`${baseURL}/checklisence`, {
@@ -89,9 +121,11 @@ function App() {
                 }
             });
         };
-        // fetchData(); 
+        runEvery("license-refresh", 3, async () => {
+            await fetchData();
+        });
     }, []);
-    return (_jsxs(_Fragment, { children: [_jsx("div", {}), _jsx(Header, { active: active, isActive: isActive, setIsActive: setIsActive, setSettingPage: setSettingPage, SettingPage: SettingPage, setActive: setActive }), SettingPage ? _jsx(Setting, {}) : _jsx(VisualEditPro, { isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive })] }));
+    return (_jsxs(_Fragment, { children: [_jsx("div", {}), _jsx(Header, { active: active, isActive: isActive, setIsActive: setIsActive, setSettingPage: setSettingPage, SettingPage: SettingPage, setActive: setActive }), SettingPage ? _jsx(Setting, {}) : _jsx(VisualEditPro, { handleAction: handleAction, isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive })] }));
 }
 export default App;
 { /* <div style={{width:'100%', display:"flex", flexDirection:"column",gap:'20px', justifyContent:'center', alignItems:'center'

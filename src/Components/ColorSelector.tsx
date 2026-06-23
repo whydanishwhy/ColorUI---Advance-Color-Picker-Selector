@@ -235,7 +235,34 @@ const copyPairingColor = async (hex: string, key: string) => {
           const isHovered  = hoverIndex === index;
 
           return (
-            <div style={{ }} key={index} onMouseEnter={() => setHoverIndex(index)} onMouseLeave={() => setHoverIndex(null)}>
+            <div style={{ }} key={index} 
+            // onMouseDown={(e) => {
+            //   e.currentTarget.style.transform = "scale(0.99)";
+            //   e.currentTarget.style.boxShadow =
+            //     "inset 0 3px 8px rgba(0,0,0,.4)";
+            // }}
+            // onMouseUp={(e) => {
+            //   e.currentTarget.style.transform = "scale(1)";
+            //   e.currentTarget.style.boxShadow =
+            //     "0 8px 20px rgba(0,0,0,.25)";
+            // }}
+            onMouseEnter={(e) => 
+            {  setHoverIndex(index)
+              // e.currentTarget.style.transform = "scale(1.1)";
+              // e.currentTarget.style.boxShadow =
+              //   "0 8px 20px rgba(0,0,0,.25)";
+              
+              }
+
+
+            } onMouseLeave={(e) =>
+             {setHoverIndex(null)
+            //  e.currentTarget.style.transform = "scale(1)";
+            //  e.currentTarget.style.boxShadow =
+            //    "0 3px 10px rgba(0,0,0,.18)";
+              
+              }
+             }>
               {/* ── Base color swatch ── */}
               <div
                 style={{
@@ -285,7 +312,34 @@ const copyPairingColor = async (hex: string, key: string) => {
                      return document.body;
                    }}
                   >
-                    <div
+                 <div 
+                   onMouseDown={(e) => {
+                    e.currentTarget.style.transform = "scale(0.98)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                  }}
+                  onMouseUp={(e) => {
+                    e.currentTarget.style.transform = "scale(1.02)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 8px 20px rgba(0,0,0,.25)";
+                  }}
+
+                  onMouseEnter={(e) => {
+                  
+                    e.currentTarget.style.transform = "scale(1.1)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 8px 20px rgba(0,0,0,.25)";
+                  }}
+                  onMouseLeave={(e) => {
+                
+                    e.currentTarget.style.transform = "scale(1)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 3px 10px rgba(0,0,0,.18)";
+                  }}
+          
+                 >
+                 <div
+                       
                       onClick={() => toggleExpanded(index)}
                       style={{
                         opacity: isHovered ? 1 : 0,
@@ -300,12 +354,40 @@ const copyPairingColor = async (hex: string, key: string) => {
                         flexShrink: 0,
                       }}
                     >
-                      <ChevronRight  strokeWidth={6} color={getTextColor(color)} size={14} />
+                      <ChevronRight 
+                      
+
+                      strokeWidth={6} color={getTextColor(color)} size={14} />
                     </div>
+
+                 </div>
                   </Tippy>
 
                   {/* Center: hex label or copy feedback */}
                   <div
+                   onMouseDown={(e) => {
+                    e.currentTarget.style.transform = "scale(0.98)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                  }}
+                  onMouseUp={(e) => {
+                    e.currentTarget.style.transform = "scale(1)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 8px 20px rgba(0,0,0,.25)";
+                  }}
+
+                  onMouseEnter={(e) => {
+                  
+                    e.currentTarget.style.transform = "scale(1.1)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 8px 20px rgba(0,0,0,.25)";
+                  }}
+                  onMouseLeave={(e) => {
+                
+                    e.currentTarget.style.transform = "scale(1)";
+                    // e.currentTarget.style.boxShadow =
+                    //   "0 3px 10px rgba(0,0,0,.18)";
+                  }}
                     onClick={() =>
                    {   console.log("this is color ,", color)
                       copyColor(color, index)}}
@@ -331,6 +413,30 @@ const copyPairingColor = async (hex: string, key: string) => {
 
                 {/* Remove button */}
                 <div
+                 onMouseDown={(e) => {
+                  e.currentTarget.style.transform = "scale(0.98)";
+                  // e.currentTarget.style.boxShadow =
+                  //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = "scale(1)";
+                  // e.currentTarget.style.boxShadow =
+                  //   "0 8px 20px rgba(0,0,0,.25)";
+                }}
+
+                onMouseEnter={(e) => {
+                
+                  e.currentTarget.style.transform = "scale(1.1)";
+                  // e.currentTarget.style.boxShadow =
+                  //   "0 8px 20px rgba(0,0,0,.25)";
+                }}
+                onMouseLeave={(e) => {
+              
+                  e.currentTarget.style.transform = "scale(1)";
+                  // e.currentTarget.style.boxShadow =
+                  //   "0 3px 10px rgba(0,0,0,.18)";
+                }}
+                
                   onClick={() => removeColor(index)}
                   style={{
                     opacity: isHovered ? 1 : 0,

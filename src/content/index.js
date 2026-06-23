@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import 'tippy.js/dist/tippy.css';
 const GLOBAL_KEY = "__MY_EXTENSION_COLORUI_MOUNTED__";
-const HOST_ID = "__EXT_HOST__";
+const HOST_ID = "__EXT_HOST__COLORUI";
 // Avoid double mounting
 if (!window[GLOBAL_KEY]) {
     window[GLOBAL_KEY] = true;
@@ -61,13 +61,13 @@ if (!window[GLOBAL_KEY]) {
             });
         }
         // ------------------- Filter Layer -------------------
-        let filterLayer = document.getElementById("custom-filter-layer");
+        let filterLayer = document.getElementById("COLORUI__FILTER___LAYER");
         if (filterLayer) {
             filterLayer.remove(); // Remove existing filter layer
         }
         else {
             filterLayer = document.createElement("div");
-            filterLayer.id = "custom-filter-layer";
+            filterLayer.id = "COLORUI__FILTER___LAYER";
             Object.assign(filterLayer.style, {
                 position: "fixed",
                 inset: "0",

@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({ active,isActive, setIsActive, setActive
   const [isHovered2, setIsHovered2] = useState(false);
 
 const Close = ()=>{
-  const host = document.getElementById("__EXT_HOST__");
+  const host = document.getElementById("__EXT_HOST__COLORUI");
   if(host){
       host.style.display = 'none';
       document.documentElement.style.userSelect = ''
@@ -136,7 +136,7 @@ useEffect(() => {
   return () => observer.disconnect();
 }, []);
   return (
-    <header id="__CHROMALENS_HEADER__" style={{display:"flex",padding:'10px',width:'93%', alignItems:'center',justifyContent:'space-between'}}>
+    <header id="__COLORUI_HEADER__" style={{display:"flex",padding:'10px',width:'93%', alignItems:'center',justifyContent:'space-between'}}>
 
     {SettingPage? <svg 
     onMouseEnter={(e) => {

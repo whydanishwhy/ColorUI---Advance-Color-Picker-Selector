@@ -211,9 +211,9 @@ console.log("Look im running")
     </div>
    <Header active={active}  isActive={isActive} setIsActive={setIsActive} setSettingPage={setSettingPage}  SettingPage={SettingPage} setActive={setActive}/>
 
-<div onClick={handleAction}>{isKeyValid}</div>
+{/* <div onClick={handleAction}>{isKeyValid}</div> */}
 
-<button onClick={handleAction}> click me</button>
+{/* <button onClick={handleAction}> click me</button> */}
 
     {SettingPage?<Setting  />:<VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />}
     

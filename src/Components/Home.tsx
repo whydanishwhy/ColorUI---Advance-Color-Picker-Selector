@@ -2,7 +2,7 @@ import React, {
   useRef,
   useState,
   useCallback,
-  useEffect,
+  useEffect,useMemo
 } from "react";
 import ScreenShot from "./ScreenShot";
 import ArchSlider from "../UI-Models/ArchSlider";
@@ -76,7 +76,7 @@ useEffect(() => {
           "__CHROMA_LENS_SELECTED_AREA__"
         ) ||
         document.getElementById(
-          "custom-filter-layer"
+          "COLORUI__FILTER___LAYER"
         );
   
       if (!target) return;
@@ -107,7 +107,7 @@ useEffect(() => {
         // prevent affecting your extension UI
         if (
           element.closest("#__CHROMA_LENS_SELECTED_AREA__") ||
-          element.closest("#custom-filter-layer")
+          element.closest("#COLORUI__FILTER___LAYER")
         ) {
           return;
         }
@@ -226,7 +226,7 @@ useEffect(() => {
   const Reset = ()=>{
 
     const customDiv = document.getElementById("custom-drawn-div");
-    const customLayer = document.getElementById("custom-filter-layer");
+    const customLayer = document.getElementById("COLORUI__FILTER___LAYER");
   
     if (customDiv) {
       customDiv.style.backdropFilter = "none";
@@ -291,7 +291,7 @@ useEffect(() => {
   const [ShowReset, setShowReset] = useState(false)
 useEffect(() => {
   const customDiv = document.getElementById("custom-drawn-div") as HTMLElement | null;
-  const customLayer = document.getElementById("custom-filter-layer") as HTMLElement | null;
+  const customLayer = document.getElementById("COLORUI__FILTER___LAYER") as HTMLElement | null;
 
   const checkBackdropFilter = () => {
     const divStyle = customDiv ? window.getComputedStyle(customDiv) : null;
@@ -344,6 +344,76 @@ useEffect(() => {
 
   return () => observer.disconnect();
 }, []);
+
+
+
+
+// const GOOGLE_FONTS = [
+//   "Roboto",
+//   "Open Sans",
+//   "Lato",
+//   "Montserrat",
+//   "Poppins",
+//   "Inter",
+//   "Raleway",
+//   "Playfair Display",
+//   "Merriweather",
+//   "Nunito",
+//   "Oswald",
+//   "Source Sans Pro",
+//   "Ubuntu",
+//   "Rubik",
+//   "BJCree"
+// ];
+
+// const loadGoogleFont = (font: string) => {
+//   const id = `gf-${font.replace(/\s+/g, "-")}`;
+
+//   if (document.getElementById(id)) return;
+
+//   const link = document.createElement("link");
+//   link.id = id;
+//   link.rel = "stylesheet";
+//   link.href = `https://fonts.googleapis.com/css2?family=${font.replace(
+//     /\s+/g,
+//     "+"
+//   )}:wght@300;400;500;600;700&display=swap`;
+
+//   document.head.appendChild(link);
+// };
+// const [fontSearch, setFontSearch] = useState("");
+//   const [fontFamily, setFontFamily] = useState("Inter");
+
+
+
+//   const filteredFonts = useMemo(() => {
+//     return GOOGLE_FONTS.filter((f) =>
+//       f.toLowerCase().includes(fontSearch.toLowerCase())
+//     );
+//   }, [fontSearch]);
+
+//   const handleFontChange = () => {
+//     let font = GOOGLE_FONTS[Math.floor(Math.random() * GOOGLE_FONTS.length)];
+//     loadGoogleFont(font);
+//     setFontFamily(font);
+
+//     const all = document.body.querySelectorAll("*");
+
+// all.forEach((el) => {
+//   if (!(el instanceof HTMLElement)) return;
+
+//   const onlyText =
+//     el.childNodes.length === 1 &&
+//     el.childNodes[0].nodeType === Node.TEXT_NODE;
+
+//   if (onlyText) {
+//     el.style.fontFamily = font;
+//   }
+// });
+
+
+//   };
+
   return (
     <div
       style={{
@@ -397,12 +467,13 @@ onMouseLeave={(e) => {
             transition:
               "transform .08s ease",
             boxShadow: `
-              0 4px 10px ${baseColor},
+              0 4px 10px #5d5d5d,
               inset 8px 12px 18px rgba(51,51,51,.25)
             `,
           }}
         />
       </div>
+
 
      { 0 ?<div
           style={{

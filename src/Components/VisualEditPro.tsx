@@ -21,6 +21,7 @@ interface Props {
   setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
   isKeyValid: boolean;
   setSettingPage: React.Dispatch<React.SetStateAction<boolean>>;
+  handleAction:Function
 }
 
 // ─────────────────────────────────────────────
@@ -40,7 +41,7 @@ const Icons = {
 
 // ─────────────────────────────────────────────
 // Floating Toolbar DOM element (lives outside React)
-// Injected once into __EXT_HOST__, repositioned on select
+// Injected once into __EXT_HOST__COLORUI, repositioned on select
 // ─────────────────────────────────────────────
 let toolbarEl: HTMLDivElement | null = null;
 let tippyInstances: TippyInstance[] = [];
@@ -444,7 +445,7 @@ function buildToolbar(
 // ─────────────────────────────────────────────
 // Main Component
 // ─────────────────────────────────────────────
-const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, setSettingPage }) => {
+const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, setSettingPage, handleAction }) => {
   const [element, setElement] = useState<HTMLElement | null>(null);
   const [editingElement, setEditingElement] = useState<HTMLElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -486,7 +487,7 @@ const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, set
   }, []);
 
   const showToolbar = useCallback((target: HTMLElement) => {
-    const host = document.getElementById("__EXT_HOST__");
+    const host = document.getElementById("__EXT_HOST__COLORUI");
     if (!host) return;
 
     const tb = buildToolbar(
@@ -534,7 +535,7 @@ const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, set
   useEffect(() => {
     const onScrollOrResize = () => {
       if (elementRef.current && toolbarEl && toolbarEl.classList.contains("visible")) {
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         if (host) positionToolbar(toolbarEl, elementRef.current, host);
       }
     };
@@ -569,7 +570,7 @@ const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, set
   // ─── Draggable ──────────────────────────────
   useEffect(() => {
     if (!element || !isActive) return;
-    const host = document.getElementById("__EXT_HOST__");
+    const host = document.getElementById("__EXT_HOST__COLORUI");
 
     draggableRef.current = interact(element)
       .draggable({
@@ -655,12 +656,12 @@ const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, set
 
   // ─── Core event listeners ───────────────────
   useEffect(() => {
-    const host = document.getElementById("__EXT_HOST__");
+    const host = document.getElementById("__EXT_HOST__COLORUI");
 
     const isEditorTarget = (e: Event): boolean => {
       if (!(e.target instanceof Element)) return true;
       const el = e.target as HTMLElement;
-      return el.tagName === "BODY" || !!el.closest("#__EXT_HOST__") || !!el.closest("#__vep_toolbar__");
+      return el.tagName === "BODY" || !!el.closest("#__EXT_HOST__COLORUI") || !!el.closest("#__vep_toolbar__");
     };
 
     // ── Suppress ALL native triggers in capture phase ──
@@ -891,6 +892,7 @@ const VisualEditPro: React.FC<Props> = ({ isActive, setIsActive, isKeyValid, set
         setIsDragging={setIsDragging}
         isDraggingRef={isDraggingRef}
         element={element}
+        handleAction={handleAction}
       />
     </div>
   );

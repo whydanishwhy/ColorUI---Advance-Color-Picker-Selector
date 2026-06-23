@@ -155,7 +155,28 @@ const ColorSelector = ({ colors, setColors, pickColorState }) => {
                 const isExpanded = !!expanded[index];
                 const pairing = pairings[index];
                 const isHovered = hoverIndex === index;
-                return (_jsxs("div", { style: {}, onMouseEnter: () => setHoverIndex(index), onMouseLeave: () => setHoverIndex(null), children: [_jsxs("div", { style: {
+                return (_jsxs("div", { style: {}, 
+                    // onMouseDown={(e) => {
+                    //   e.currentTarget.style.transform = "scale(0.99)";
+                    //   e.currentTarget.style.boxShadow =
+                    //     "inset 0 3px 8px rgba(0,0,0,.4)";
+                    // }}
+                    // onMouseUp={(e) => {
+                    //   e.currentTarget.style.transform = "scale(1)";
+                    //   e.currentTarget.style.boxShadow =
+                    //     "0 8px 20px rgba(0,0,0,.25)";
+                    // }}
+                    onMouseEnter: (e) => {
+                        setHoverIndex(index);
+                        // e.currentTarget.style.transform = "scale(1.1)";
+                        // e.currentTarget.style.boxShadow =
+                        //   "0 8px 20px rgba(0,0,0,.25)";
+                    }, onMouseLeave: (e) => {
+                        setHoverIndex(null);
+                        //  e.currentTarget.style.transform = "scale(1)";
+                        //  e.currentTarget.style.boxShadow =
+                        //    "0 3px 10px rgba(0,0,0,.18)";
+                    }, children: [_jsxs("div", { style: {
                                 backgroundColor: color,
                                 height: "60px",
                                 width: "100%",
@@ -183,18 +204,50 @@ const ColorSelector = ({ colors, setColors, pickColorState }) => {
                                                     return root; // 👈 safe cast for Tippy
                                                 }
                                                 return document.body;
-                                            }, children: _jsx("div", { onClick: () => toggleExpanded(index), style: {
-                                                    opacity: isHovered ? 1 : 0,
-                                                    transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
-                                                    transition: "transform 0.25s ease, opacity 0.2s",
-                                                    height: "60px",
-                                                    width: "60px",
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    alignItems: "center",
-                                                    cursor: "pointer",
-                                                    flexShrink: 0,
-                                                }, children: _jsx(ChevronRight, { strokeWidth: 6, color: getTextColor(color), size: 14 }) }) }), _jsx("div", { onClick: () => {
+                                            }, children: _jsx("div", { onMouseDown: (e) => {
+                                                    e.currentTarget.style.transform = "scale(0.98)";
+                                                    // e.currentTarget.style.boxShadow =
+                                                    //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                                                }, onMouseUp: (e) => {
+                                                    e.currentTarget.style.transform = "scale(1.02)";
+                                                    // e.currentTarget.style.boxShadow =
+                                                    //   "0 8px 20px rgba(0,0,0,.25)";
+                                                }, onMouseEnter: (e) => {
+                                                    e.currentTarget.style.transform = "scale(1.1)";
+                                                    // e.currentTarget.style.boxShadow =
+                                                    //   "0 8px 20px rgba(0,0,0,.25)";
+                                                }, onMouseLeave: (e) => {
+                                                    e.currentTarget.style.transform = "scale(1)";
+                                                    // e.currentTarget.style.boxShadow =
+                                                    //   "0 3px 10px rgba(0,0,0,.18)";
+                                                }, children: _jsx("div", { onClick: () => toggleExpanded(index), style: {
+                                                        opacity: isHovered ? 1 : 0,
+                                                        transform: isExpanded ? "rotate(90deg)" : "rotate(0deg)",
+                                                        transition: "transform 0.25s ease, opacity 0.2s",
+                                                        height: "60px",
+                                                        width: "60px",
+                                                        display: "flex",
+                                                        justifyContent: "center",
+                                                        alignItems: "center",
+                                                        cursor: "pointer",
+                                                        flexShrink: 0,
+                                                    }, children: _jsx(ChevronRight, { strokeWidth: 6, color: getTextColor(color), size: 14 }) }) }) }), _jsx("div", { onMouseDown: (e) => {
+                                                e.currentTarget.style.transform = "scale(0.98)";
+                                                // e.currentTarget.style.boxShadow =
+                                                //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                                            }, onMouseUp: (e) => {
+                                                e.currentTarget.style.transform = "scale(1)";
+                                                // e.currentTarget.style.boxShadow =
+                                                //   "0 8px 20px rgba(0,0,0,.25)";
+                                            }, onMouseEnter: (e) => {
+                                                e.currentTarget.style.transform = "scale(1.1)";
+                                                // e.currentTarget.style.boxShadow =
+                                                //   "0 8px 20px rgba(0,0,0,.25)";
+                                            }, onMouseLeave: (e) => {
+                                                e.currentTarget.style.transform = "scale(1)";
+                                                // e.currentTarget.style.boxShadow =
+                                                //   "0 3px 10px rgba(0,0,0,.18)";
+                                            }, onClick: () => {
                                                 console.log("this is color ,", color);
                                                 copyColor(color, index);
                                             }, style: {
@@ -203,7 +256,23 @@ const ColorSelector = ({ colors, setColors, pickColorState }) => {
                                                 justifyContent: "center",
                                                 alignItems: "center",
                                                 cursor: "pointer",
-                                            }, children: copyIndex === index ? (_jsx("span", { style: { fontSize: "16px", fontWeight: "700", color: getTextColor(color) }, children: "Copied" })) : (_jsx("span", { style: { fontSize: "16px", fontWeight: "700", color: getTextColor(color) }, children: converters[selected](color) })) })] }), _jsx("div", { onClick: () => removeColor(index), style: {
+                                            }, children: copyIndex === index ? (_jsx("span", { style: { fontSize: "16px", fontWeight: "700", color: getTextColor(color) }, children: "Copied" })) : (_jsx("span", { style: { fontSize: "16px", fontWeight: "700", color: getTextColor(color) }, children: converters[selected](color) })) })] }), _jsx("div", { onMouseDown: (e) => {
+                                        e.currentTarget.style.transform = "scale(0.98)";
+                                        // e.currentTarget.style.boxShadow =
+                                        //   "inset 0 3px 8px rgba(0,0,0,.4)";
+                                    }, onMouseUp: (e) => {
+                                        e.currentTarget.style.transform = "scale(1)";
+                                        // e.currentTarget.style.boxShadow =
+                                        //   "0 8px 20px rgba(0,0,0,.25)";
+                                    }, onMouseEnter: (e) => {
+                                        e.currentTarget.style.transform = "scale(1.1)";
+                                        // e.currentTarget.style.boxShadow =
+                                        //   "0 8px 20px rgba(0,0,0,.25)";
+                                    }, onMouseLeave: (e) => {
+                                        e.currentTarget.style.transform = "scale(1)";
+                                        // e.currentTarget.style.boxShadow =
+                                        //   "0 3px 10px rgba(0,0,0,.18)";
+                                    }, onClick: () => removeColor(index), style: {
                                         opacity: isHovered ? 1 : 0,
                                         position: "absolute",
                                         right: "-5px",

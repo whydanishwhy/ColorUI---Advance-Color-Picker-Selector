@@ -6,7 +6,7 @@ const Header = ({ active, isActive, setIsActive, setActive, setSettingPage, Sett
     const [isHovered, setIsHovered] = useState(false);
     const [isHovered2, setIsHovered2] = useState(false);
     const Close = () => {
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         if (host) {
             host.style.display = 'none';
             document.documentElement.style.userSelect = '';
@@ -88,7 +88,7 @@ const Header = ({ active, isActive, setIsActive, setActive, setSettingPage, Sett
         }
         return () => observer.disconnect();
     }, []);
-    return (_jsxs("header", { id: "__CHROMALENS_HEADER__", style: { display: "flex", padding: '10px', width: '93%', alignItems: 'center', justifyContent: 'space-between' }, children: [SettingPage ? _jsx("svg", { onMouseEnter: (e) => {
+    return (_jsxs("header", { id: "__COLORUI_HEADER__", style: { display: "flex", padding: '10px', width: '93%', alignItems: 'center', justifyContent: 'space-between' }, children: [SettingPage ? _jsx("svg", { onMouseEnter: (e) => {
                     e.currentTarget.style.transform = "scale(1.06)";
                     e.currentTarget.style.boxShadow =
                         "0 8px 20px rgba(0,0,0,.25)";

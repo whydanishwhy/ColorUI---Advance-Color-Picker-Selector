@@ -2,11 +2,12 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { useEffect, useMemo, useState, useRef } from 'react';
 import ColorInput from '../UI-Models/ColorInput';
 import DragNumberInput from '../UI-Models/DragNumberInput';
-import { Box, Camera, ALargeSmall, SquareRoundCorner, Minus, PenTool, WholeWord, Bold, TextAlignStart, TextInitial, AlignVerticalSpaceAround, TextAlignJustify, TextAlignEnd, Wallpaper, Ban, X, MessageCircleQuestionMark, PanelRightDashed, Eclipse, FileInput, Stone, Tag, SquareMousePointer, ChevronRight } from 'lucide-react';
+import { Box, Camera, ALargeSmall, SquareRoundCorner, PenTool, TextAlignStart, TextAlignJustify, TextAlignEnd, Wallpaper, Ban, X, MessageCircleQuestionMark, PanelRightDashed, Eclipse, FileInput, Stone, Tag, SquareMousePointer } from 'lucide-react';
 import Tippy from '@tippyjs/react';
 import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
 import ColorSelector from './ColorSelector';
+import Generator from './Generator';
 import { baseColor } from '../UI-Models/Constant';
 import interact from 'interactjs';
 import Joystick3D from '../UI-Models/Joystick3D';
@@ -803,7 +804,7 @@ const CSSFiltersPanel = ({ element, setIsActive }) => {
 const ScreenshotPanel = () => _jsx(ScreenShot, {});
 const FreeDrawPanel = () => _jsx(FreeDraw, {});
 const Comment = () => _jsx(Comments, {});
-const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIsActive, isActive, isKeyValid, setSettingPage }) => {
+const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIsActive, isActive, isKeyValid, setSettingPage, handleAction }) => {
     const [searchQuery, setSearchQuery] = useState('');
     // ✅ useMemo rebuilds the LIST STRUCTURE (icons, titles, elementProps) when deps change,
     // but Element values point to STABLE hoisted components above — React never remounts them.
@@ -1144,7 +1145,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
     const [ShowReset, setShowReset] = useState(false);
     useEffect(() => {
         const customDiv = document.getElementById("custom-drawn-div");
-        const customLayer = document.getElementById("custom-filter-layer");
+        const customLayer = document.getElementById("COLORUI__FILTER___LAYER");
         const checkBackdropFilter = () => {
             const divStyle = customDiv ? window.getComputedStyle(customDiv) : null;
             const layerStyle = customLayer ? window.getComputedStyle(customLayer) : null;
@@ -1182,7 +1183,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
     }, []);
     const Reset = () => {
         const customDiv = document.getElementById("custom-drawn-div");
-        const customLayer = document.getElementById("custom-filter-layer");
+        const customLayer = document.getElementById("COLORUI__FILTER___LAYER");
         if (customDiv) {
             customDiv.style.backdropFilter = "none";
         }
@@ -1202,7 +1203,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
             const element = el;
             // prevent affecting your extension UI
             if (element.closest("#__CHROMA_LENS_SELECTED_AREA__") ||
-                element.closest("#custom-filter-layer")) {
+                element.closest("#COLORUI__FILTER___LAYER")) {
                 return;
             }
             element.style.filter = "";
@@ -1270,6 +1271,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
         transition: "all 0.2s ease",
     });
     const [hideThings, sethideThings] = useState(true);
+    const [colorPalette, setColorPalette] = useState([]);
     return (_jsxs("div", { onMouseEnter: (e) => { sethideThings(false); }, onMouseLeave: (e) => { sethideThings(true); }, style: { minHeight: '300px', userSelect: 'none' }, children: [colors.length ? '' : _jsx("div", { style: { display: 'flex', height: '', justifyContent: 'center', alignItems: 'center', gap: '8px', width: '100%' }, children: _jsxs("div", { style: { display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', zIndex: 2 }, children: [_jsx(Tippy, { content: _jsx("span", { style: {
                                     color: "#EAEAEA",
                                     fontSize: "16px",
@@ -1341,8 +1343,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                                 boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
                                                 animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
                                                 transformOrigin: "top",
-                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: ["ColorUI", ' '] })] }) }), isActive ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), isActive ? '' :
-                (colors.length ? '' : _jsx(ColorUI, { element: element })), isActive ? '' :
+                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: ["ColorUI", ' '] })] }) }), isActive ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), _jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette }), isActive ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",
                             fontSize: "16px",
@@ -1382,7 +1383,8 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                             e.currentTarget.style.boxShadow =
                                 "0 8px 20px rgba(0,0,0,.25)";
                         }, onClick: () => {
-                            1 ? setpickColorState(pre => !pre) : setSettingPage(true);
+                            // 1? setpickColorState(pre=>!pre) : setSettingPage(true);
+                            handleAction(setpickColorState(pre => !pre));
                         }, style: {
                             background: "#1b1b1b",
                             borderRadius: "100%",
@@ -1416,7 +1418,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                 transition: "all .25s ease",
                             }, children: fields.map((item, index) => {
                                 const isOpen = openIndex === index;
-                                return (_jsxs("div", { style: {
+                                return (_jsx("div", { style: {
                                         display: "flex",
                                         flexDirection: "column",
                                         gap: "8px",
@@ -1433,93 +1435,27 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                         boxShadow: isOpen
                                             ? "0 8px 20px rgba(0,0,0,0.25)"
                                             : "none",
-                                    }, children: [_jsxs("div", { style: {
-                                                display: "grid",
-                                                gridTemplateColumns: "28px 1fr auto",
-                                                alignItems: "center",
-                                                gap: "10px",
-                                                minHeight: "42px",
-                                            }, children: [_jsx("div", { onClick: () => toggle(index), style: {
-                                                        width: "28px",
-                                                        height: "28px",
-                                                        borderRadius: "8px",
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "center",
-                                                        cursor: "pointer",
-                                                        background: isOpen
-                                                            ? "rgba(255,255,255,0.06)"
-                                                            : "transparent",
-                                                        transition: "all .25s ease",
-                                                    }, children: _jsx(ChevronRight, { size: 14, strokeWidth: 3, color: isOpen ? "#fff" : "#777", style: {
-                                                            transform: isOpen
-                                                                ? "rotate(90deg)"
-                                                                : "rotate(0deg)",
-                                                            transition: "transform .28s cubic-bezier(.4,0,.2,1)",
-                                                        } }) }), _jsx("label", { style: {
-                                                        fontSize: "14px",
-                                                        fontWeight: 500,
-                                                        color: isOpen ? "#fff" : "#d0d0d0",
-                                                        whiteSpace: "nowrap",
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis",
-                                                        letterSpacing: "0.2px",
-                                                        transition: "color .2s ease",
-                                                    }, children: item.label }), _jsx("div", { style: {
-                                                        minWidth: 0,
-                                                        display: "flex",
-                                                        alignItems: "center",
-                                                        justifyContent: "flex-end",
-                                                    }, children: _jsx(ColorInput, { element: element, mode: item.mode, Bgcolor: Bgcolor }) })] }), _jsx("div", { style: {
-                                                maxHeight: isOpen ? "500px" : "0px",
-                                                opacity: isOpen ? 1 : 0,
-                                                overflow: "hidden",
-                                                transition: "all .32s cubic-bezier(.4,0,.2,1)",
-                                            }, children: _jsxs("div", { style: {
-                                                    borderRadius: "12px",
-                                                    // background:
-                                                    //   "#121212",
-                                                    // border:
-                                                    //   "1px solid rgba(255,255,255,0.04)",
-                                                    color: "#b8b8b8",
-                                                    fontSize: "12px",
-                                                    lineHeight: 1.5,
-                                                }, children: [index === 1 ?
-                                                        _jsxs("div", { onMouseDown: (e) => e.stopPropagation(), style: { background: '', padding: '10px' }, children: [_jsxs("nav", { style: { display: 'flex', gap: '10px' }, children: [_jsx("p", { onClick: () => setBgPage("presets"), style: { cursor: "pointer", color: BgPage === 'presets' ? '#3B9D55' : '' }, children: "Presets" }), _jsx("p", { onClick: () => setBgPage("image"), style: { cursor: "pointer", color: BgPage === 'image' ? '#3B9D55' : '' }, children: "Image" })] }), BgPage === "presets" &&
-                                                                    _jsx("div", { children: _jsx("div", { style: styles.grid, children: PRESETS.map((grad) => grad === "transparent" ? (_jsx("div", { onClick: () => {
-                                                                                    if (element)
-                                                                                        element.style.background = grad;
-                                                                                    setBgColor(grad);
-                                                                                }, onMouseEnter: () => setHovered(grad), onMouseLeave: () => setHovered(null), style: Object.assign(Object.assign({}, styles.circle), { display: "flex", alignItems: "center", justifyContent: "center", border: bgColor === grad ? "1px solid #fff" : "1px solid #555", cursor: "pointer", transform: hovered === grad ? "scale(1.1)" : "scale(1)", transition: "transform 0.2s ease" }), children: _jsx(Ban, { color: "red" }) }, grad)) : (_jsx("div", { onClick: () => {
-                                                                                    if (element)
-                                                                                        element.style.background = grad;
-                                                                                    setBgColor(grad);
-                                                                                }, onMouseEnter: () => setHovered(grad), onMouseLeave: () => setHovered(null), style: Object.assign(Object.assign({}, styles.circle), { background: grad, border: bgColor === grad ? "1px solid #fff" : "1px solid transparent", boxShadow: bgColor === grad ? "0 0 0 2px rgba(0,0,0,0.2)" : "none", cursor: "pointer", transform: hovered === grad ? "scale(1.1)" : "scale(1)", transition: "transform 0.2s ease" }) }, grad))) }) }), BgPage === "image" && _jsx(ImagePanel, { element: element })] }) : index === 0 ?
-                                                        _jsxs("div", { onMouseDown: (e) => e.stopPropagation(), style: { background: '', padding: '10px' }, children: [_jsxs("div", { style: { display: "flex", flexDirection: "column", gap: "6px", marginBottom: '20px' }, children: [_jsx("label", { style: { fontSize: "13px", color: 'rgb(136, 134, 134)' }, children: "Font Family (Google Fonts)" }), _jsx("select", { value: fontFamily, onChange: (e) => handleFontChange(e.target.value), style: {
-                                                                                padding: "8px 12px",
-                                                                                borderRadius: "8px",
-                                                                                border: "1px solid #2a2a2a",
-                                                                                background: "#171717",
-                                                                                color: "gray",
-                                                                                fontSize: "14px",
-                                                                                outline: "none",
-                                                                                cursor: "pointer",
-                                                                                minWidth: "220px",
-                                                                                transition: "all 0.2s ease",
-                                                                                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
-                                                                            }, onFocus: (e) => {
-                                                                                e.currentTarget.style.border = "1px solid #3B9D55";
-                                                                                e.currentTarget.style.boxShadow =
-                                                                                    "0 0 0 3px rgba(59,157,85,0.18)";
-                                                                            }, onBlur: (e) => {
-                                                                                e.currentTarget.style.border = "1px solid #2a2a2a";
-                                                                                e.currentTarget.style.boxShadow =
-                                                                                    "inset 0 1px 0 rgba(255,255,255,0.03)";
-                                                                            }, children: filteredFonts.map((font) => (_jsx("option", { value: font, style: {
-                                                                                    background: "#171717",
-                                                                                    color: "gray",
-                                                                                }, children: font }, font))) })] }), _jsxs("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }, children: [_jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "fontSize", symbol: "Aa", label: "Font Size", min: 0, max: 200, step: 1 }), _jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "fontWeight", symbol: _jsx(Bold, { size: 11 }), label: "Font Weight", min: 100, max: 900, step: 100 })] }), _jsxs("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }, children: [_jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "lineHeight", symbol: _jsx(AlignVerticalSpaceAround, { size: 15 }), label: "Line Height", min: -10, max: 100, step: 1 }), _jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "letterSpacing", symbol: _jsx(WholeWord, { size: 15 }), label: "Letter Spacing", min: -10, max: 100, step: 1 })] }), _jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "wordSpacing", symbol: _jsx(TextInitial, { size: 15 }), label: "Word Spacing", min: -10, max: 100, step: 1 }), _jsxs("div", { style: { display: "flex", gap: "8px", marginTop: '5px' }, children: [_jsx("div", { style: btnStyle("start"), onClick: () => setAlign("start"), children: _jsx(TextAlignStart, { size: 20 }) }), _jsx("div", { style: btnStyle("center"), onClick: () => setAlign("center"), children: _jsx(TextAlignJustify, { size: 20 }) }), _jsx("div", { style: btnStyle("end"), onClick: () => setAlign("end"), children: _jsx(TextAlignEnd, { size: 20 }) })] })] }) : '', index === 2 ? // Border
-                                                        _jsx("div", { children: _jsxs("div", { style: { padding: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }, children: [_jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "borderWidth", symbol: _jsx(Minus, {}), label: "Border Stroke", min: 0, max: 99999999, step: 1 }), _jsx(DragNumberInput, { isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, property: "borderRadius", symbol: _jsx(SquareRoundCorner, {}), label: "Border Radius", min: 0, max: 99999999, step: 1 })] }) }) : ''] }) })] }, item.mode));
+                                    }, children: _jsxs("div", { style: {
+                                            display: "grid",
+                                            gridTemplateColumns: "28px 1fr auto",
+                                            alignItems: "center",
+                                            gap: "10px",
+                                            minHeight: "42px",
+                                        }, children: [_jsx("label", { style: {
+                                                    fontSize: "14px",
+                                                    fontWeight: 500,
+                                                    color: isOpen ? "#fff" : "#d0d0d0",
+                                                    whiteSpace: "nowrap",
+                                                    overflow: "hidden",
+                                                    // textOverflow: "ellipsis",
+                                                    letterSpacing: "0.2px",
+                                                    transition: "color .2s ease",
+                                                }, children: item.label }), _jsx("div", { style: {
+                                                    minWidth: 0,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "flex-end",
+                                                }, children: _jsx(ColorInput, { element: element, mode: item.mode, Bgcolor: Bgcolor }) })] }) }, item.mode));
                             }) }) }) : ''] }));
 };
 export default VisualEditor;

@@ -20,7 +20,7 @@ const Icons = {
 };
 // ─────────────────────────────────────────────
 // Floating Toolbar DOM element (lives outside React)
-// Injected once into __EXT_HOST__, repositioned on select
+// Injected once into __EXT_HOST__COLORUI, repositioned on select
 // ─────────────────────────────────────────────
 let toolbarEl = null;
 let tippyInstances = [];
@@ -381,7 +381,7 @@ function buildToolbar(target, onDeselect, onDelete, onEnterEdit, containerEl) {
 // ─────────────────────────────────────────────
 // Main Component
 // ─────────────────────────────────────────────
-const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) => {
+const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage, handleAction }) => {
     const [element, setElement] = useState(null);
     const [editingElement, setEditingElement] = useState(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -418,7 +418,7 @@ const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) =>
         }
     }, []);
     const showToolbar = useCallback((target) => {
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         if (!host)
             return;
         const tb = buildToolbar(target, 
@@ -460,7 +460,7 @@ const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) =>
     useEffect(() => {
         const onScrollOrResize = () => {
             if (elementRef.current && toolbarEl && toolbarEl.classList.contains("visible")) {
-                const host = document.getElementById("__EXT_HOST__");
+                const host = document.getElementById("__EXT_HOST__COLORUI");
                 if (host)
                     positionToolbar(toolbarEl, elementRef.current, host);
             }
@@ -497,7 +497,7 @@ const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) =>
     useEffect(() => {
         if (!element || !isActive)
             return;
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         draggableRef.current = interact(element)
             .draggable({
             inertia: true,
@@ -588,12 +588,12 @@ const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) =>
     }, [isActive, cleanupEditMode, cleanupSelection, hideToolbar]);
     // ─── Core event listeners ───────────────────
     useEffect(() => {
-        const host = document.getElementById("__EXT_HOST__");
+        const host = document.getElementById("__EXT_HOST__COLORUI");
         const isEditorTarget = (e) => {
             if (!(e.target instanceof Element))
                 return true;
             const el = e.target;
-            return el.tagName === "BODY" || !!el.closest("#__EXT_HOST__") || !!el.closest("#__vep_toolbar__");
+            return el.tagName === "BODY" || !!el.closest("#__EXT_HOST__COLORUI") || !!el.closest("#__vep_toolbar__");
         };
         // ── Suppress ALL native triggers in capture phase ──
         const suppressNative = (e) => {
@@ -804,6 +804,6 @@ const VisualEditPro = ({ isActive, setIsActive, isKeyValid, setSettingPage }) =>
             hideToolbar();
         };
     }, [cleanupEditMode, cleanupSelection, showToolbar, hideToolbar]);
-    return (_jsx("div", { children: _jsx(InspectorSidebar, { isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive, isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element }) }));
+    return (_jsx("div", { children: _jsx(InspectorSidebar, { isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive, isDragging: isDragging, setIsDragging: setIsDragging, isDraggingRef: isDraggingRef, element: element, handleAction: handleAction }) }));
 };
 export default VisualEditPro;

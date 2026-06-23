@@ -122,7 +122,7 @@ async function hideUI(tabId) {
     await chrome.scripting.executeScript({
       target: { tabId },
       func: () => {
-        const h = document.getElementById("__EXT_HOST__");
+        const h = document.getElementById("__EXT_HOST__COLORUI");
         if (!h) return;
         h.dataset.ssV  = h.style.visibility;
         h.dataset.ssO  = h.style.opacity;
@@ -146,7 +146,7 @@ async function showUI(tabId) {
     await chrome.scripting.executeScript({
       target: { tabId },
       func: () => {
-        const h = document.getElementById("__EXT_HOST__");
+        const h = document.getElementById("__EXT_HOST__COLORUI");
         if (!h) return;
         h.style.visibility   = h.dataset.ssV  ?? "visible";
         h.style.opacity      = h.dataset.ssO  ?? "1";
@@ -327,7 +327,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: () => {
-        const r = document.getElementById("__EXT_HOST__");
+        const r = document.getElementById("__EXT_HOST__COLORUI");
         if (r) { r.style.display = "none"; }
         document.documentElement.style.userSelect = "";
       },
@@ -337,7 +337,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     await chrome.scripting.executeScript({
       target: { tabId: tab.id },
       func: () => {
-        const r = document.getElementById("__EXT_HOST__");
+        const r = document.getElementById("__EXT_HOST__COLORUI");
         if (r) { r.style.display = "block";
           r.querySelector("#colorSelectorBtn")?.click();  
 

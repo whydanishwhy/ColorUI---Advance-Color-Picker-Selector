@@ -8,6 +8,7 @@ import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
 import ColorSelector from './ColorSelector';
 import Notepad from './NotePad';
+import Generator from './Generator';
 import { baseColor } from '../UI-Models/Constant';
 import interact from 'interactjs';
 import Joystick3D from '../UI-Models/Joystick3D';
@@ -1633,6 +1634,7 @@ interface ChildProps {
   isActive:boolean;
   isKeyValid: boolean;
   setSettingPage: React.Dispatch<React.SetStateAction<boolean>>;
+  handleAction:Function
 }
 
 const VisualEditor: React.FC<ChildProps> = ({
@@ -1643,7 +1645,8 @@ const VisualEditor: React.FC<ChildProps> = ({
   setIsActive,
   isActive,
   isKeyValid,
-  setSettingPage
+  setSettingPage,
+  handleAction
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -2055,7 +2058,7 @@ const handleFontChange = (font: string) => {
 const [ShowReset, setShowReset] = useState(false)
 useEffect(() => {
   const customDiv = document.getElementById("custom-drawn-div") as HTMLElement | null;
-  const customLayer = document.getElementById("custom-filter-layer") as HTMLElement | null;
+  const customLayer = document.getElementById("COLORUI__FILTER___LAYER") as HTMLElement | null;
 
   const checkBackdropFilter = () => {
     const divStyle = customDiv ? window.getComputedStyle(customDiv) : null;
@@ -2112,7 +2115,7 @@ useEffect(() => {
 const Reset = ()=>{
 
   const customDiv = document.getElementById("custom-drawn-div");
-  const customLayer = document.getElementById("custom-filter-layer");
+  const customLayer = document.getElementById("COLORUI__FILTER___LAYER");
 
   if (customDiv) {
     customDiv.style.backdropFilter = "none";
@@ -2140,7 +2143,7 @@ const Reset = ()=>{
       // prevent affecting your extension UI
       if (
         element.closest("#__CHROMA_LENS_SELECTED_AREA__") ||
-        element.closest("#custom-filter-layer")
+        element.closest("#COLORUI__FILTER___LAYER")
       ) {
         return;
       }
@@ -2238,7 +2241,7 @@ const btnStyle = (align: string): React.CSSProperties => ({
   transition: "all 0.2s ease",
 });
 const [hideThings, sethideThings] = useState(true)
-
+const [colorPalette, setColorPalette] = useState<string[]>([]);
 
 return (
     <div 
@@ -2371,6 +2374,7 @@ return (
 }     </div>
 
    </Tippy>
+
 <div style={styleH1}>
           ColorUI{' '}
     
@@ -2396,11 +2400,8 @@ return (
 
      {isActive?'': <ColorSelector  colors={colors} setColors={setColors} pickColorState={pickColorState}/>}
 
-    { isActive ?'':
-(colors.length?'': <ColorUI element={element} />
-)    }
 
-
+     <Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  />
 
 
 {isActive?'':
@@ -2470,7 +2471,9 @@ id='colorSelectorBtn'
       "0 8px 20px rgba(0,0,0,.25)";
   }}
         onClick={()=>{
-          1? setpickColorState(pre=>!pre) : setSettingPage(true);
+          // 1? setpickColorState(pre=>!pre) : setSettingPage(true);
+
+          handleAction(setpickColorState(pre=>!pre))
         }
         }
         style={{
@@ -2559,36 +2562,7 @@ id='colorSelectorBtn'
             minHeight: "42px",
           }}
         >
-          {/* Arrow */}
-          <div
-            onClick={() => toggle(index)}
-            style={{
-              width: "28px",
-              height: "28px",
-              borderRadius: "8px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              background: isOpen
-                ? "rgba(255,255,255,0.06)"
-                : "transparent",
-              transition: "all .25s ease",
-            }}
-          >
-            <ChevronRight
-              size={14}
-              strokeWidth={3}
-              color={isOpen ? "#fff" : "#777"}
-              style={{
-                transform: isOpen
-                  ? "rotate(90deg)"
-                  : "rotate(0deg)",
-                transition:
-                  "transform .28s cubic-bezier(.4,0,.2,1)",
-              }}
-            />
-          </div>
+  
 
           {/* Label */}
           <label
@@ -2598,7 +2572,7 @@ id='colorSelectorBtn'
               color: isOpen ? "#fff" : "#d0d0d0",
               whiteSpace: "nowrap",
               overflow: "hidden",
-              textOverflow: "ellipsis",
+              // textOverflow: "ellipsis",
               letterSpacing: "0.2px",
               transition: "color .2s ease",
             }}
@@ -2623,294 +2597,7 @@ id='colorSelectorBtn'
           </div>
         </div>
 
-        {/* Expand Area */}
-        <div
-          style={{
-            maxHeight: isOpen ? "500px" : "0px",
-            opacity: isOpen ? 1 : 0,
-            overflow: "hidden",
-            transition:
-              "all .32s cubic-bezier(.4,0,.2,1)",
-          }}
-        >
-          <div
-            style={{
-              borderRadius: "12px",
-              // background:
-              //   "#121212",
-              // border:
-              //   "1px solid rgba(255,255,255,0.04)",
-              color: "#b8b8b8",
-              fontSize: "12px",
-              lineHeight: 1.5,
-            }}
-          >
-          {index === 1?
-            <div
-            onMouseDown={(e) => e.stopPropagation()}
-            style={{background:'', padding:'10px'}}>
-
-<nav style={{display:'flex',gap:'10px' }}>
-        <p onClick={() => setBgPage("presets")} style={{ cursor: "pointer" , color:BgPage ==='presets'?'#3B9D55':''}}>Presets</p>
-        <p onClick={() => setBgPage("image")} style={{ cursor: "pointer",color:BgPage ==='image'?'#3B9D55':'' }}>Image</p>
-
-      </nav>
-    
-      {BgPage === "presets" && 
-      <div>
-      
-      <div style={styles.grid}>
-      {PRESETS.map((grad) =>
-      grad === "transparent" ? (
-      <div
-        key={grad}
-        onClick={() => {
-          if (element) element.style.background = grad;
-          setBgColor(grad);
-        }}
-        onMouseEnter={() => setHovered(grad)}
-        onMouseLeave={() => setHovered(null)}
-        style={{
-          ...styles.circle,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          border: bgColor === grad ? "1px solid #fff" : "1px solid #555",
-          cursor: "pointer",
-          transform: hovered === grad ? "scale(1.1)" : "scale(1)",
-          transition: "transform 0.2s ease"
-        }}
-      >
-        <Ban color="red" />
-      </div>
-      ) : (
-      <div
-        key={grad}
-        onClick={() => {
-          if (element) element.style.background = grad;
-          setBgColor(grad);
-        }}
-        onMouseEnter={() => setHovered(grad)}
-        onMouseLeave={() => setHovered(null)}
-        style={{
-          ...styles.circle,
-          background: grad,
-          border:
-            bgColor === grad ? "1px solid #fff" : "1px solid transparent",
-          boxShadow:
-            bgColor === grad ? "0 0 0 2px rgba(0,0,0,0.2)" : "none",
-          cursor: "pointer",
-          transform: hovered === grad ? "scale(1.1)" : "scale(1)",
-          transition: "transform 0.2s ease"
-        }}
-      />
-      )
-      )}
-      </div>
-      </div>
-      }
-
-{BgPage === "image" && <ImagePanel element={element} />
-}
-
-
-
-
-</div>: index === 0 ?
-          
-            
-            <div   onMouseDown={(e) => e.stopPropagation()}
-            style={{background:'', padding:'10px'}}>
-
-<div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom:'20px' }}>
-            <label style={{ fontSize: "13px", color:'rgb(136, 134, 134)' }}>
-              Font Family (Google Fonts)
-            </label>
-
-            {/* <input
-              value={fontSearch}
-              onChange={(e) => setFontSearch(e.target.value)}
-              placeholder="Search fonts..."
-              style={{
-                padding: "6px",
-                border: "1px solid #ccc",
-                borderRadius: 6,
-              }}
-            /> */}
-
-<select
-  value={fontFamily}
-  onChange={(e) => handleFontChange(e.target.value)}
-  style={{
-    padding: "8px 12px",
-    borderRadius: "8px",
-    border: "1px solid #2a2a2a",
-    background: "#171717",
-    color: "gray",
-    fontSize: "14px",
-    outline: "none",
-    cursor: "pointer",
-    minWidth: "220px",
-    transition: "all 0.2s ease",
-    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.03)",
-  }}
-  onFocus={(e) => {
-    e.currentTarget.style.border = "1px solid #3B9D55";
-    e.currentTarget.style.boxShadow =
-      "0 0 0 3px rgba(59,157,85,0.18)";
-  }}
-  onBlur={(e) => {
-    e.currentTarget.style.border = "1px solid #2a2a2a";
-    e.currentTarget.style.boxShadow =
-      "inset 0 1px 0 rgba(255,255,255,0.03)";
-  }}
->
-  {filteredFonts.map((font) => (
-    <option
-      key={font}
-      value={font}
-      style={{
-        background: "#171717",
-        color: "gray",
-      }}
-    >
-      {font}
-    </option>
-  ))}
-</select>
-
-          </div>
-           
-          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'5px'}}>
-          <DragNumberInput
-               isDragging={isDragging}
-               setIsDragging={setIsDragging}
-               isDraggingRef={isDraggingRef}
-               element={element}
-               property="fontSize"
-               symbol={"Aa"}
-               label="Font Size"
-               min={0}
-               max={200}
-               step={1}
-             />
-             <DragNumberInput
-               isDragging={isDragging}
-               setIsDragging={setIsDragging}
-               isDraggingRef={isDraggingRef}
-               element={element}
-               property="fontWeight"
-               symbol={<Bold size={11}/>}
-               label="Font Weight"
-               min={100}
-               max={900}
-               step={100}
-             />
-          </div>
-
-
-               {/* LETTER SPACING */}
-        <div style={{display:'flex', alignItems:'center', justifyContent:'space-between',marginBottom:'5px'}}>
-        <DragNumberInput
-            isDragging={isDragging}
-            setIsDragging={setIsDragging}
-            isDraggingRef={isDraggingRef}
-            element={element}
-            property="lineHeight"
-            symbol={<AlignVerticalSpaceAround size={15}/>}
-            label="Line Height"
-            min={-10}
-            max={100}
-            step={1}
-          />
-
-<DragNumberInput
-            isDragging={isDragging}
-            setIsDragging={setIsDragging}
-            isDraggingRef={isDraggingRef}
-            element={element}
-            property="letterSpacing"
-            symbol={<WholeWord size={15}/>}
-            label="Letter Spacing"
-            min={-10}
-            max={100}
-            step={1}
-          />
-        </div>
-
-        <DragNumberInput
-            isDragging={isDragging}
-            setIsDragging={setIsDragging}
-            isDraggingRef={isDraggingRef}
-            element={element}
-            property="wordSpacing"
-            symbol={<TextInitial size={15}/>}
-            label="Word Spacing"
-            min={-10}
-            max={100}
-            step={1}
-          />
-
-          {/* TEXT ALIGN */}
-          <div style={{ display: "flex", gap: "8px", marginTop:'5px' }}>
-      <div style={btnStyle("start")} onClick={() => setAlign("start")}>
-        <TextAlignStart size={20} />
-      </div>
-
-      <div style={btnStyle("center")} onClick={() => setAlign("center")}>
-        <TextAlignJustify size={20} />
-      </div>
-
-      <div style={btnStyle("end")} onClick={() => setAlign("end")}>
-        <TextAlignEnd size={20} />
-      </div>
-    </div>
-
-          {/* BG AS TEXT */}
-          {/* <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-            <Switch
-              checked={useBgAsText}
-              onChange={() => {
-                setuseBgAsText((pre) => !pre);
-
-                if (element && useBgAsText) {
-                  element.style.webkitBackgroundClip = "text";
-                  element.style.webkitTextFillColor = "transparent";
-                } else if (element) {
-                  element.style.webkitBackgroundClip = "";
-                  element.style.webkitTextFillColor = "";
-                }
-              }}
-            />
-            use background as text color
-          </div> */}
-        
-            </div>:''
-       
-          
-     }
-
-     {index===2?   // Border
-          
-          <div>
-  <div style={{ padding: '12px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-  
- 
-
-<DragNumberInput
-  isDragging={isDragging} setIsDragging={setIsDragging} isDraggingRef={isDraggingRef}
-  element={element} property="borderWidth" symbol={<Minus/>} label="Border Stroke" min={0} max={99999999} step={1}
-/>
-
-<DragNumberInput
-  isDragging={isDragging} setIsDragging={setIsDragging} isDraggingRef={isDraggingRef}
-  element={element} property="borderRadius" symbol={<SquareRoundCorner/>} label="Border Radius" min={0} max={99999999} step={1}
-/>
-
-</div>
-          </div>  :''}
-          </div>
-        </div>
+     
       </div>
     );
   })}

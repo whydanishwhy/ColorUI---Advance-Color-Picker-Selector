@@ -1,4 +1,4 @@
-export const baseURL = `https://8f39-103-28-253-133.ngrok-free.app/api/webbit/Gumroad`
-// export const baseColor = `#3b9d88`
+export const baseURL = `https://whydanishwhy.vercel.app/api/webbit/Gumroad`
+export const baseColor = `#3b9d88`
 // export const WebbitLocalKey;
-export const baseColor:string = `#f2f2f2`
+// export const baseColor:string = `#f2f2f2`

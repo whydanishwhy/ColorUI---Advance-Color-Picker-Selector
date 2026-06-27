@@ -2,6 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { useEffect, useState } from "react";
 import { baseURL } from "../UI-Models/Constant";
 import { Trash2 } from "lucide-react";
+import { baseColor } from "../UI-Models/Constant";
 const LicenseManagement = () => {
     /* ───────────────────────────────
        THEME (EDIT EVERYTHING HERE)
@@ -192,18 +193,21 @@ const LicenseManagement = () => {
                 border: `1px solid ${theme.border}`,
                 borderRadius: 24,
                 padding: 26,
-            }, children: [activeKey && (_jsxs("div", { style: {
+            }, children: [activeKey && (_jsx("div", { style: {
                         padding: 16,
                         borderRadius: 14,
                         marginBottom: 16,
-                        background: "rgba(73,209,124,0.08)",
-                        border: "1px solid rgba(73,209,124,0.25)",
-                    }, children: [_jsx("div", { style: { color: theme.green, fontWeight: 800 }, children: "License Active" }), _jsx("div", { style: {
-                                color: theme.text,
-                                fontWeight: 700,
-                                letterSpacing: 2,
-                                marginTop: 6,
-                            }, children: activeKey })] })), !activeKey && (_jsxs(_Fragment, { children: [_jsx("h2", { style: { color: theme.text }, children: "Activate License" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(e.target.value), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {
+                        // background: "rgba(73,209,124,0.08)",
+                        // border: "1px solid rgba(73,209,124,0.25)",
+                    }, children: _jsxs("div", { style: {
+                            color: 'theme.text',
+                            fontWeight: 700,
+                            letterSpacing: 2,
+                            marginTop: 6,
+                            textAlign: 'center'
+                        }, children: [_jsxs("div", { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '7px' }, children: [_jsx("div", { style: { fontSize: '15px', color: 'gray' }, children: " Orpheus" }), _jsx("svg", { width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", children: _jsx("path", { d: "M8.6 22.5L6.7 19.3L3.1 18.5L3.45 14.8L1 12L3.45 9.2L3.1 5.5L6.7 4.7L8.6 1.5L12 2.95L15.4 1.5L17.3 4.7L20.9 5.5L20.55 9.2L23 12L20.55 14.8L20.9 18.5L17.3 19.3L15.4 22.5L12 21.05L8.6 22.5ZM10.95 15.55L16.6 9.9L15.2 8.45L10.95 12.7L8.8 10.6L7.4 12L10.95 15.55Z", fill: "#C67100" }) })] }), activeKey.length > 8
+                                ? `${activeKey.slice(0, 4)}...${activeKey.slice(-4)}`
+                                : activeKey] }) })), !activeKey && (_jsxs(_Fragment, { children: [_jsx("h2", { style: { color: theme.text }, children: "Activate License" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(e.target.value), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {
                                 width: "100%",
                                 marginTop: 12,
                                 padding: 12,
@@ -218,7 +222,29 @@ const LicenseManagement = () => {
                                 gridTemplateColumns: "1fr 1fr",
                                 gap: 10,
                                 marginTop: 16,
-                            }, children: [_jsx("button", { onClick: activateLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { background: isBusy ? theme.disabled : theme.accent, color: "#000" }), children: loading === "activate" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Activating"] })) : ("Activate") }), _jsx("button", { disabled: true, style: Object.assign(Object.assign({}, btn), { background: theme.soft, color: theme.sub, border: `1px solid ${theme.border}` }), children: "Buy" })] })] })), activeKey && isOverLimit && (_jsxs("div", { style: {
+                            }, children: [_jsx("button", { onMouseEnter: (e) => {
+                                        // e.currentTarget.style.background = "#222";
+                                        e.currentTarget.style.transform = "scale(1.06)";
+                                    }, onMouseLeave: (e) => {
+                                        // e.currentTarget.style.background = "#1a1a1a";
+                                        e.currentTarget.style.transform = "scale(1)";
+                                    }, onMouseDown: (e) => {
+                                        e.stopPropagation();
+                                        e.currentTarget.style.transform = "scale(0.96)";
+                                    }, onMouseUp: (e) => {
+                                        e.currentTarget.style.transform = "scale(1.02)";
+                                    }, onClick: activateLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { background: isBusy ? theme.disabled : baseColor, color: "#000" }), children: loading === "activate" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Activating"] })) : ("Activate") }), _jsx("button", { onMouseEnter: (e) => {
+                                        // e.currentTarget.style.background = "#222";
+                                        e.currentTarget.style.transform = "scale(1.06)";
+                                    }, onMouseLeave: (e) => {
+                                        // e.currentTarget.style.background = "#1a1a1a";
+                                        e.currentTarget.style.transform = "scale(1)";
+                                    }, onMouseDown: (e) => {
+                                        e.stopPropagation();
+                                        e.currentTarget.style.transform = "scale(0.96)";
+                                    }, onMouseUp: (e) => {
+                                        e.currentTarget.style.transform = "scale(1.02)";
+                                    }, style: Object.assign(Object.assign({}, btn), { background: theme.soft, color: theme.sub, border: `1px solid ${theme.border}` }), children: "Buy" })] })] })), activeKey && isOverLimit && (_jsxs("div", { style: {
                         marginTop: 16,
                         padding: 12,
                         borderRadius: 12,
@@ -243,7 +269,18 @@ const LicenseManagement = () => {
                                         color: theme.sub,
                                         fontSize: 11,
                                         marginTop: 2,
-                                    }, children: new Date(d.time).toLocaleDateString() })] }), _jsx("button", { onClick: () => removeServerSlot(d.time), disabled: isBusy, style: {
+                                    }, children: new Date(d.time).toLocaleDateString() })] }), _jsx("button", { onMouseEnter: (e) => {
+                                // e.currentTarget.style.background = "#222";
+                                e.currentTarget.style.transform = "scale(1.06)";
+                            }, onMouseLeave: (e) => {
+                                // e.currentTarget.style.background = "#1a1a1a";
+                                e.currentTarget.style.transform = "scale(1)";
+                            }, onMouseDown: (e) => {
+                                e.stopPropagation();
+                                e.currentTarget.style.transform = "scale(0.96)";
+                            }, onMouseUp: (e) => {
+                                e.currentTarget.style.transform = "scale(1.02)";
+                            }, onClick: () => removeServerSlot(d.time), disabled: isBusy, style: {
                                 width: 34,
                                 height: 34,
                                 borderRadius: 10,
@@ -254,7 +291,18 @@ const LicenseManagement = () => {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                            }, children: _jsx(Trash2, { size: 16 }) })] }, i))), activeKey && (_jsx("button", { onClick: removeLocalLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { width: "100%", marginTop: 18, background: loading === "remove" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "remove" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Removing License"] })) : ("Delete License") })), status.text && (_jsx("div", { style: {
+                            }, children: _jsx(Trash2, { size: 16 }) })] }, i))), activeKey && (_jsx("button", { onMouseEnter: (e) => {
+                        // e.currentTarget.style.background = "#222";
+                        e.currentTarget.style.transform = "scale(1.06)";
+                    }, onMouseLeave: (e) => {
+                        // e.currentTarget.style.background = "#1a1a1a";
+                        e.currentTarget.style.transform = "scale(1)";
+                    }, onMouseDown: (e) => {
+                        e.stopPropagation();
+                        e.currentTarget.style.transform = "scale(0.96)";
+                    }, onMouseUp: (e) => {
+                        e.currentTarget.style.transform = "scale(1.02)";
+                    }, onClick: removeLocalLicense, disabled: isBusy, style: Object.assign(Object.assign({}, btn), { width: "100%", marginTop: 18, background: loading === "remove" ? theme.disabled : theme.red, color: "#fff" }), children: loading === "remove" ? (_jsxs(_Fragment, { children: [_jsx(Spinner, {}), " Removing License"] })) : (_jsx(Trash2, {})) })), status.text && (_jsx("div", { style: {
                         marginTop: 16,
                         padding: 12,
                         borderRadius: 12,

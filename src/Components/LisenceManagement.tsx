@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { baseURL } from "../UI-Models/Constant";
 import { Trash2 } from "lucide-react";
-
+import { baseColor } from "../UI-Models/Constant"; 
 type ActivatedDevice = {
   licenseKey: string;
   time: string;
@@ -232,22 +232,31 @@ const LicenseManagement = () => {
               padding: 16,
               borderRadius: 14,
               marginBottom: 16,
-              background: "rgba(73,209,124,0.08)",
-              border: "1px solid rgba(73,209,124,0.25)",
+              // background: "rgba(73,209,124,0.08)",
+              // border: "1px solid rgba(73,209,124,0.25)",
             }}
           >
-            <div style={{ color: theme.green, fontWeight: 800 }}>
-              License Active
-            </div>
+           
             <div
               style={{
-                color: theme.text,
+                color: 'theme.text',
                 fontWeight: 700,
                 letterSpacing: 2,
                 marginTop: 6,
+                textAlign:'center'
               }}
             >
-              {activeKey}
+                <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap:'7px'}}>
+                  <div style={{fontSize:'15px', color:'gray'}}> Orpheus</div>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.6 22.5L6.7 19.3L3.1 18.5L3.45 14.8L1 12L3.45 9.2L3.1 5.5L6.7 4.7L8.6 1.5L12 2.95L15.4 1.5L17.3 4.7L20.9 5.5L20.55 9.2L23 12L20.55 14.8L20.9 18.5L17.3 19.3L15.4 22.5L12 21.05L8.6 22.5ZM10.95 15.55L16.6 9.9L15.2 8.45L10.95 12.7L8.8 10.6L7.4 12L10.95 15.55Z" fill="#C67100"/>
+</svg>
+
+                  </div> 
+
+              {activeKey.length > 8
+    ? `${activeKey.slice(0, 4)}...${activeKey.slice(-4)}`
+    : activeKey}
             </div>
           </div>
         )}
@@ -284,11 +293,31 @@ const LicenseManagement = () => {
               }}
             >
               <button
+               onMouseEnter={(e) => {
+                // e.currentTarget.style.background = "#222";
+                e.currentTarget.style.transform = "scale(1.06)";
+          
+              }}
+              onMouseLeave={(e) => {
+                // e.currentTarget.style.background = "#1a1a1a";
+                e.currentTarget.style.transform = "scale(1)";
+      
+              }}
+                onMouseDown={(e) => {
+                  e.stopPropagation()
+                  e.currentTarget.style.transform = "scale(0.96)";
+              
+                }}
+                onMouseUp={(e) => {
+                  e.currentTarget.style.transform = "scale(1.02)";
+                }}
+
+
                 onClick={activateLicense}
                 disabled={isBusy}
                 style={{
                   ...btn,
-                  background: isBusy ? theme.disabled : theme.accent,
+                  background: isBusy ? theme.disabled : baseColor,
                   color: "#000",
                 }}
               >
@@ -302,7 +331,24 @@ const LicenseManagement = () => {
               </button>
 
               <button
-                disabled
+                  onMouseEnter={(e) => {
+                    // e.currentTarget.style.background = "#222";
+                    e.currentTarget.style.transform = "scale(1.06)";
+              
+                  }}
+                  onMouseLeave={(e) => {
+                    // e.currentTarget.style.background = "#1a1a1a";
+                    e.currentTarget.style.transform = "scale(1)";
+          
+                  }}
+                    onMouseDown={(e) => {
+                      e.stopPropagation()
+                      e.currentTarget.style.transform = "scale(0.96)";
+                  
+                    }}
+                    onMouseUp={(e) => {
+                      e.currentTarget.style.transform = "scale(1.02)";
+                    }}
                 style={{
                   ...btn,
                   background: theme.soft,
@@ -371,6 +417,24 @@ const LicenseManagement = () => {
     </div>
 
     <button
+      onMouseEnter={(e) => {
+        // e.currentTarget.style.background = "#222";
+        e.currentTarget.style.transform = "scale(1.06)";
+  
+      }}
+      onMouseLeave={(e) => {
+        // e.currentTarget.style.background = "#1a1a1a";
+        e.currentTarget.style.transform = "scale(1)";
+
+      }}
+        onMouseDown={(e) => {
+          e.stopPropagation()
+          e.currentTarget.style.transform = "scale(0.96)";
+      
+        }}
+        onMouseUp={(e) => {
+          e.currentTarget.style.transform = "scale(1.02)";
+        }}
       onClick={() => removeServerSlot(d.time)}
       disabled={isBusy}
       style={{
@@ -394,6 +458,26 @@ const LicenseManagement = () => {
         {/* ALWAYS VISIBLE DELETE LICENSE (FIXED UX) */}
         {activeKey && (
           <button
+          onMouseEnter={(e) => {
+            // e.currentTarget.style.background = "#222";
+            e.currentTarget.style.transform = "scale(1.06)";
+      
+          }}
+          onMouseLeave={(e) => {
+            // e.currentTarget.style.background = "#1a1a1a";
+            e.currentTarget.style.transform = "scale(1)";
+    
+          }}
+            onMouseDown={(e) => {
+              e.stopPropagation()
+              e.currentTarget.style.transform = "scale(0.96)";
+          
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = "scale(1.02)";
+            }}
+
+
             onClick={removeLocalLicense}
             disabled={isBusy}
             style={{
@@ -409,7 +493,7 @@ const LicenseManagement = () => {
                 <Spinner /> Removing License
               </>
             ) : (
-              "Delete License"
+              <Trash2 />
             )}
           </button>
         )}

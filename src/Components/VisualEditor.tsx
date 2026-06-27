@@ -17,6 +17,8 @@ import Switch from '../UI-Models/Switch';
 import { SingleFocusLists, ListData } from './../UI-Models/SingleListItem';
 import { ExportElement } from './ExportElement';
 import AskAI from './AskAI';
+import { motion } from "framer-motion";
+
 
 interface PanelProps {
   element: HTMLElement | null;
@@ -2244,7 +2246,18 @@ const [hideThings, sethideThings] = useState(true)
 const [colorPalette, setColorPalette] = useState<string[]>([]);
 
 return (
-    <div 
+    <motion.div 
+    initial={{
+      opacity: 0,
+      y: 20,
+      scale: 0.96
+    }}
+    animate={{
+      opacity: 1,
+      y: 0,
+      scale: 1
+    }}
+
     onMouseEnter={(e)=>{sethideThings(false)}}
     onMouseLeave={(e)=>{sethideThings(true)}}
  
@@ -2292,7 +2305,10 @@ return (
   }}
       >
      
-     <div  style={{position:'fixed', top:'20px', left:'20px'}}
+     <div 
+     
+     
+     style={{position:'fixed', top:'20px', left:'20px'}}
      onMouseEnter={(e) => {
       // e.currentTarget.style.background = "#222";
       e.currentTarget.style.transform = "scale(1.06)";
@@ -2401,7 +2417,7 @@ return (
      {isActive?'': <ColorSelector  colors={colors} setColors={setColors} pickColorState={pickColorState}/>}
 
 
-     <Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  />
+     {/* <Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  /> */}
 
 
 {isActive?'':
@@ -2618,7 +2634,7 @@ id='colorSelectorBtn'
 
 
     
-      </div>
+      </motion.div>
   );
 };
 

@@ -2,6 +2,7 @@ import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-run
 import { useState, useEffect } from "react";
 import interact from "interactjs";
 import Header from "../Components/Header";
+import VisualEditPro from "../Components/VisualEditPro";
 import Setting from "../Components/Setting";
 import { baseURL } from "../UI-Models/Constant";
 import axios from "axios";
@@ -87,6 +88,7 @@ function App() {
             });
         }
     };
+    // license Key
     useEffect(() => {
         var _a;
         if (typeof chrome !== "undefined" && ((_a = chrome.storage) === null || _a === void 0 ? void 0 : _a.local)) {
@@ -125,9 +127,7 @@ function App() {
         });
     }, []);
     return (_jsxs(_Fragment, { children: [_jsx("div", {}), _jsx(Header, { active: active, isActive: isActive, setIsActive: setIsActive, setSettingPage: setSettingPage, SettingPage: SettingPage, setActive: setActive }), SettingPage ? _jsx(Setting, {}) :
-                // <VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />
-                _jsx("div", { children: isKeyValid ? _jsx("button", { children: "Test button" }) :
-                        _jsx("div", { children: "Buy license first" }) })] }));
+                _jsx(VisualEditPro, { handleAction: handleAction, isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive })] }));
 }
 export default App;
 { /* <div style={{width:'100%', display:"flex", flexDirection:"column",gap:'20px', justifyContent:'center', alignItems:'center'

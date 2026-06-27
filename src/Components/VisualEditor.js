@@ -7,13 +7,13 @@ import Tippy from '@tippyjs/react';
 import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
 import ColorSelector from './ColorSelector';
-import Generator from './Generator';
 import { baseColor } from '../UI-Models/Constant';
 import interact from 'interactjs';
 import Joystick3D from '../UI-Models/Joystick3D';
 import InstructionSelectElement from './InstructionSelectElement';
 import Switch from '../UI-Models/Switch';
 import AskAI from './AskAI';
+import { motion } from "framer-motion";
 // --- Dimensions ---
 const DimensionsPanel = ({ element, isDragging, setIsDragging, isDraggingRef, setIsActive }) => {
     const [setInstrcutionPage, setsetInstrcutionPage] = useState(true);
@@ -1272,7 +1272,15 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
     });
     const [hideThings, sethideThings] = useState(true);
     const [colorPalette, setColorPalette] = useState([]);
-    return (_jsxs("div", { onMouseEnter: (e) => { sethideThings(false); }, onMouseLeave: (e) => { sethideThings(true); }, style: { minHeight: '300px', userSelect: 'none' }, children: [colors.length ? '' : _jsx("div", { style: { display: 'flex', height: '', justifyContent: 'center', alignItems: 'center', gap: '8px', width: '100%' }, children: _jsxs("div", { style: { display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', zIndex: 2 }, children: [_jsx(Tippy, { content: _jsx("span", { style: {
+    return (_jsxs(motion.div, { initial: {
+            opacity: 0,
+            y: 20,
+            scale: 0.96
+        }, animate: {
+            opacity: 1,
+            y: 0,
+            scale: 1
+        }, onMouseEnter: (e) => { sethideThings(false); }, onMouseLeave: (e) => { sethideThings(true); }, style: { minHeight: '300px', userSelect: 'none' }, children: [colors.length ? '' : _jsx("div", { style: { display: 'flex', height: '', justifyContent: 'center', alignItems: 'center', gap: '8px', width: '100%' }, children: _jsxs("div", { style: { display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', zIndex: 2 }, children: [_jsx(Tippy, { content: _jsx("span", { style: {
                                     color: "#EAEAEA",
                                     fontSize: "16px",
                                     fontWeight: 500,
@@ -1343,7 +1351,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                                 boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
                                                 animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
                                                 transformOrigin: "top",
-                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: ["ColorUI", ' '] })] }) }), isActive ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), _jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette }), isActive ? '' :
+                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: ["ColorUI", ' '] })] }) }), isActive ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), isActive ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",
                             fontSize: "16px",

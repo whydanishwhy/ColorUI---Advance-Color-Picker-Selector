@@ -9,6 +9,9 @@ import {
   type PairingMode,
 } from "./Colorpairingengine";
 
+import { motion } from "framer-motion";
+
+
 import { rgbStringToHex, rgbaToRgb, rgbToHsl } from "../UI-Models/ColorsConversions";
 
 interface Props {
@@ -235,7 +238,19 @@ const copyPairingColor = async (hex: string, key: string) => {
           const isHovered  = hoverIndex === index;
 
           return (
-            <div style={{ }} key={index} 
+            <motion.div
+            initial={{
+              opacity: 0,
+              y: 20,
+              scale: 0.96
+            }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              scale: 1
+            }}
+            
+            style={{ }} key={index} 
             // onMouseDown={(e) => {
             //   e.currentTarget.style.transform = "scale(0.99)";
             //   e.currentTarget.style.boxShadow =
@@ -677,7 +692,7 @@ const copyPairingColor = async (hex: string, key: string) => {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

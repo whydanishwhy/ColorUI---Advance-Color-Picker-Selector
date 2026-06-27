@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { RefreshCcw, ChevronRight } from "lucide-react";
 import Tippy from "@tippyjs/react";
 import { generatePairings, autoMode, } from "./Colorpairingengine";
+import { motion } from "framer-motion";
 import { rgbStringToHex, rgbaToRgb, rgbToHsl } from "../UI-Models/ColorsConversions";
 // ── Helpers ───────────────────────────────────
 // ── Mode labels for the picker UI ─────────────
@@ -155,7 +156,15 @@ const ColorSelector = ({ colors, setColors, pickColorState }) => {
                 const isExpanded = !!expanded[index];
                 const pairing = pairings[index];
                 const isHovered = hoverIndex === index;
-                return (_jsxs("div", { style: {}, 
+                return (_jsxs(motion.div, { initial: {
+                        opacity: 0,
+                        y: 20,
+                        scale: 0.96
+                    }, animate: {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1
+                    }, style: {}, 
                     // onMouseDown={(e) => {
                     //   e.currentTarget.style.transform = "scale(0.99)";
                     //   e.currentTarget.style.boxShadow =

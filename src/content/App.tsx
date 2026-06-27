@@ -145,7 +145,7 @@ const handleAction = async () => {
 };
 
 
-  
+  // license Key
   useEffect(() => {
 
     if (typeof chrome !== "undefined" && chrome.storage?.local) {
@@ -218,14 +218,9 @@ const handleAction = async () => {
 
     {SettingPage?<Setting  />:
     
-    // <VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />
+    <VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />
 
-    
- <div>
-   { isKeyValid ? <button>Test button</button>:
-  
-  <div>Buy license first</div>}
- </div>
+
    
     
     }

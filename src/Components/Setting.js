@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import LisenceManagement from './LisenceManagement';
 import Switch from '../UI-Models/Switch';
 import { baseColor } from '../UI-Models/Constant';
+import { motion } from "framer-motion";
 const Setting = () => {
     const modes = ["RGB", "HEX", "HSL"];
     const [selected, setSelected] = useState("RGB");
@@ -25,7 +26,15 @@ const Setting = () => {
             openPickerOnRun,
         });
     }, [selected, disabledOnMedia, openPickerOnRun]);
-    return (_jsxs("div", { style: {
+    return (_jsxs(motion.div, { initial: {
+            opacity: 0,
+            y: 20,
+            scale: 0.96
+        }, animate: {
+            opacity: 1,
+            y: 0,
+            scale: 1
+        }, style: {
             animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
             transformOrigin: "left",
         }, children: [_jsx(LisenceManagement, {}), _jsxs("div", { children: [_jsxs("div", { style: {

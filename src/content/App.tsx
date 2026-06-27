@@ -14,6 +14,7 @@ import AskAI from "../Components/AskAI";
 import { baseURL } from "../UI-Models/Constant";
 import Orpheus from "../Components/Orpheus";
 import axios from "axios";
+import { button, div } from "framer-motion/client";
 interface Area {
   x: number;
   y: number;
@@ -25,7 +26,9 @@ function App() {
 
   const [active, setActive] = useState("Home");
 
+  // License Key
   const [isKeyValid, setisKeyValid] = useState(false);
+
   const [usageCount, setUsageCount] = useState(0);
 
 
@@ -130,7 +133,6 @@ const handleAction = async () => {
   }
 
   // Perform action
-console.log("Look im running")
 
 
 
@@ -201,7 +203,6 @@ console.log("Look im running")
   }, []);
 
 
-
   return (
     <>
     <div
@@ -215,7 +216,19 @@ console.log("Look im running")
 
 {/* <button onClick={handleAction}> click me</button> */}
 
-    {SettingPage?<Setting  />:<VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />}
+    {SettingPage?<Setting  />:
+    
+    // <VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />
+
+    
+ <div>
+   { isKeyValid ? <button>Test button</button>:
+  
+  <div>Buy license first</div>}
+ </div>
+   
+    
+    }
     
 
 

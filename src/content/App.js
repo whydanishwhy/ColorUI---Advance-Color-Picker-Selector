@@ -2,12 +2,12 @@ import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-run
 import { useState, useEffect } from "react";
 import interact from "interactjs";
 import Header from "../Components/Header";
-import VisualEditPro from "../Components/VisualEditPro";
 import Setting from "../Components/Setting";
 import { baseURL } from "../UI-Models/Constant";
 import axios from "axios";
 function App() {
     const [active, setActive] = useState("Home");
+    // License Key
     const [isKeyValid, setisKeyValid] = useState(false);
     const [usageCount, setUsageCount] = useState(0);
     const [SettingPage, setSettingPage] = useState(false);
@@ -81,7 +81,6 @@ function App() {
             return;
         }
         // Perform action
-        console.log("Look im running");
         if (isKeyValid === false || isKeyValid === null) {
             await chrome.storage.local.set({
                 usageCount: usageCount + 1,
@@ -125,7 +124,10 @@ function App() {
             await fetchData();
         });
     }, []);
-    return (_jsxs(_Fragment, { children: [_jsx("div", {}), _jsx(Header, { active: active, isActive: isActive, setIsActive: setIsActive, setSettingPage: setSettingPage, SettingPage: SettingPage, setActive: setActive }), SettingPage ? _jsx(Setting, {}) : _jsx(VisualEditPro, { handleAction: handleAction, isKeyValid: isKeyValid, setSettingPage: setSettingPage, isActive: isActive, setIsActive: setIsActive })] }));
+    return (_jsxs(_Fragment, { children: [_jsx("div", {}), _jsx(Header, { active: active, isActive: isActive, setIsActive: setIsActive, setSettingPage: setSettingPage, SettingPage: SettingPage, setActive: setActive }), SettingPage ? _jsx(Setting, {}) :
+                // <VisualEditPro handleAction={handleAction} isKeyValid={isKeyValid} setSettingPage={setSettingPage} isActive={isActive} setIsActive={setIsActive} />
+                _jsx("div", { children: isKeyValid ? _jsx("button", { children: "Test button" }) :
+                        _jsx("div", { children: "Buy license first" }) })] }));
 }
 export default App;
 { /* <div style={{width:'100%', display:"flex", flexDirection:"column",gap:'20px', justifyContent:'center', alignItems:'center'

@@ -1403,9 +1403,9 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                         }
                                         setshowColorsPaletteGenerator(pre => !pre);
                                     }, style: { fontSize: '11px', background: 'none', fontWeight: '500', color: '#3b82f6', cursor: 'pointer' }, children: "Generate palette ?" })] })] }) }), showColorsPaletteGenerator ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), showColorsPaletteGenerator ?
-                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette, showVisualizer: showVisualizer }), _jsxs("div", { onClick: () => {
+                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette, showVisualizer: showVisualizer }), _jsx("div", { onClick: () => {
                                 setshowVisualizer(pre => !pre);
-                            }, children: [showVisualizer ? _jsx(ChevronDown, {}) : '', showVisualizer ? '' : _jsx(ChevronUp, {})] }), showVisualizer ? _jsx(Visualizer, { colorPalette: colorPalette }) : ''] })
+                            }, children: _jsxs("div", { style: { position: 'absolute', right: '10px', top: '50px' }, children: [showVisualizer ? _jsx(ChevronDown, {}) : '', showVisualizer ? '' : _jsx(ChevronUp, {})] }) }), showVisualizer ? _jsx(Visualizer, { colorPalette: colorPalette }) : ''] })
                 : '', showColorsPaletteGenerator ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",

@@ -359,7 +359,7 @@ style={{
       
           // width:showVisualizer?'30%':'100%',
           boxSizing:'border-box',
-          height:showVisualizer ?'40px':'200pX',
+          height:showVisualizer ?'40px':'400px',
 
           transition: "width 0.4s ease, height 0.4s ease",
           marginLeft:showVisualizer?'20px':''
@@ -389,7 +389,6 @@ style={{
           ref={colorPaletteAnimate}
           style={{
             display: "flex",
-            border: "1px solid #242424",
             width: "100%",
             height: "100%",
             boxSizing: "border-box",
@@ -414,7 +413,7 @@ style={{
                 textAlign: "center",
                 border:showVisualizer?'1px solid gray':'',
                 borderRadius:showVisualizer?'100%':'',
-                transition: `height 0.3s ease,width 0.5s ease, ${showVisualizer? 'border-radius 2s ease' : 'border-radius 0.5s ease'}`,
+                transition: showVisualizer ?'height 0.3s ease,width 0.5s ease, border-radius 2s ease':'height 0.3s ease,width 0.5s ease, border-radius 0.2s ease'
               }}
               onMouseEnter={addMoreColors}
               onMouseLeave={mouseout}
@@ -427,7 +426,7 @@ style={{
                 }}
               >
                 {showVisualizer?'':<span
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer" ,fontSize:'18px',}}
                   onClick={() => lockBtn(index, color)}
                 >
                   {color}

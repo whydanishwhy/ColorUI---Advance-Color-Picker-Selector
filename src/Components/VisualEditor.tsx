@@ -2514,8 +2514,10 @@ onClick={()=>{
   setshowVisualizer(pre=>!pre)
 }}
 >
+<div style={{position:'absolute',right:'10px', top:'50px'}}>
 {showVisualizer?<ChevronDown />:''}
 {showVisualizer?'':<ChevronUp  />}
+</div>
 
 </div>
 {showVisualizer?<Visualizer colorPalette={colorPalette}   />:''}

@@ -447,7 +447,7 @@ const S = {
   // H1
   h1: (color: string): React.CSSProperties => ({
     fontFamily: "'Georgia', serif",
-    fontSize: "22px",
+    fontSize: "30px",
     fontWeight: 700,
     lineHeight: 1.1,
     letterSpacing: "-0.8px",

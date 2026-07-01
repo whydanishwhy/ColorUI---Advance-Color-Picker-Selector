@@ -241,13 +241,11 @@ const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
             }, style: {
                 // width:showVisualizer?'30%':'100%',
                 boxSizing: 'border-box',
-                height: showVisualizer ? '40px' : '200pX',
-                borderRadius: showVisualizer ? '100%' : '',
+                height: showVisualizer ? '40px' : '400px',
                 transition: "width 0.4s ease, height 0.4s ease",
                 marginLeft: showVisualizer ? '20px' : ''
             }, children: [_jsx("div", { ref: colorPaletteAnimate, style: {
                         display: "flex",
-                        border: "1px solid #242424",
                         width: "100%",
                         height: "100%",
                         boxSizing: "border-box",
@@ -266,12 +264,12 @@ const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
                             textAlign: "center",
                             border: showVisualizer ? '1px solid gray' : '',
                             borderRadius: showVisualizer ? '100%' : '',
-                            transition: `height 0.3s ease,width 0.5s ease, ${showVisualizer ? 'border-radius 2s ease' : 'border-radius 0.5s ease'}`,
+                            transition: showVisualizer ? 'height 0.3s ease,width 0.5s ease, border-radius 2s ease' : 'height 0.3s ease,width 0.5s ease, border-radius 0.2s ease'
                         }, onMouseEnter: addMoreColors, onMouseLeave: mouseout, children: _jsxs("div", { style: {
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: "10px",
-                            }, children: [showVisualizer ? '' : _jsxs("span", { style: { cursor: "pointer" }, onClick: () => lockBtn(index, color), children: [color, lockedColors.some((lock) => lock.index === index)
+                            }, children: [showVisualizer ? '' : _jsxs("span", { style: { cursor: "pointer", fontSize: '18px', }, onClick: () => lockBtn(index, color), children: [color, lockedColors.some((lock) => lock.index === index)
                                             ? " 🔒"
                                             : ""] }), _jsx("input", { type: "color", value: color, onChange: (e) => handleColorChange(index, e.target.value), style: {
                                         cursor: "pointer",

@@ -7,12 +7,14 @@ import Tippy from '@tippyjs/react';
 import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
 import ColorSelector from './ColorSelector';
+import Generator from './Generator';
 import { baseColor } from '../UI-Models/Constant';
 import interact from 'interactjs';
 import Joystick3D from '../UI-Models/Joystick3D';
 import InstructionSelectElement from './InstructionSelectElement';
 import Switch from '../UI-Models/Switch';
 import AskAI from './AskAI';
+import Visualizer from './Visualizer';
 import { motion } from "framer-motion";
 // --- Dimensions ---
 const DimensionsPanel = ({ element, isDragging, setIsDragging, isDraggingRef, setIsActive }) => {
@@ -910,6 +912,9 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
         color: 'transparent',
+        position: 'absolute',
+        top: '150px',
+        left: '127px'
     };
     // 3. Filter listsData before passing to SingleFocusLists:
     const filteredLists = useMemo(() => {
@@ -1272,6 +1277,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
     });
     const [hideThings, sethideThings] = useState(true);
     const [colorPalette, setColorPalette] = useState([]);
+    const [showColorsPaletteGenerator, setshowColorsPaletteGenerator] = useState(false);
     return (_jsxs(motion.div, { initial: {
             opacity: 0,
             y: 20,
@@ -1351,7 +1357,29 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                                 boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
                                                 animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
                                                 transformOrigin: "top",
-                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: ["ColorUI", ' '] })] }) }), isActive ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), isActive ? '' :
+                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: [_jsxs("div", { children: [" ColorUI", ' '] }), _jsx("div", { onMouseEnter: (e) => {
+                                    }, onClick: () => {
+                                        var _a;
+                                        const host = document.getElementById("__EXT_HOST__COLORUI");
+                                        const container = (_a = host === null || host === void 0 ? void 0 : host.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("div");
+                                        if (host && container) {
+                                            const appContainer = host;
+                                            if (appContainer) {
+                                                if (showColorsPaletteGenerator) {
+                                                    appContainer.style.transition = 'all 0.9s ease-in-out';
+                                                    appContainer.style.width = '350px';
+                                                }
+                                                else {
+                                                    appContainer.style.transition = 'all 0.9s ease-in-out';
+                                                    appContainer.style.width = '700px';
+                                                }
+                                                // appContainer.style.height= '900px'
+                                            }
+                                        }
+                                        setshowColorsPaletteGenerator(pre => !pre);
+                                    }, style: { fontSize: '11px', background: 'none', fontWeight: '500', color: '#3b82f6', cursor: 'pointer' }, children: "Generate palette ?" })] })] }) }), showColorsPaletteGenerator ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), showColorsPaletteGenerator ?
+                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette }), _jsx(Visualizer, { colorPalette: colorPalette })] })
+                : '', showColorsPaletteGenerator ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",
                             fontSize: "16px",

@@ -57,7 +57,7 @@ useEffect(() => {
       <LisenceManagement  />
      
 <div>
-<div
+{/* <div
   style={{
     display: 'flex',
     justifyContent: 'space-between',
@@ -74,9 +74,9 @@ useEffect(() => {
       setDisabledOnMedia(prev => !prev)
     }
   />
-</div>
+</div> */}
 
-<div
+{/* <div
   style={{
     display: 'flex',
     justifyContent: 'space-between',
@@ -93,7 +93,7 @@ useEffect(() => {
       setOpenPickerOnRun(prev => !prev)
     }
   />
-</div>
+</div> */}
 </div>
 
     <div

@@ -264,6 +264,9 @@ const Generator = ({ setColorPalette, colorPalette, }) => {
                         background: "#242424",
                         color: "white",
                         marginTop: "10px",
+                        zIndex: 888,
+                        position: 'fixed',
+                        top: '20px'
                     }, onClick: gen, children: "Generate Palette" })] }) }));
 };
 export default Generator;

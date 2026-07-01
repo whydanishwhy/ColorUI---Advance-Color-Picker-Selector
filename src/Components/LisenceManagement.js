@@ -99,7 +99,7 @@ const LicenseManagement = () => {
             const data = await res.json();
             if (res.ok) {
                 setActiveKey(licenseKey);
-                showStatus("success", "License activated", "Orpheus is now active on this device.");
+                showStatus("success", "License activated", "ColorUI is now active on this device.");
             }
             else {
                 setBlockedDevices(data.activatedDevices || []);
@@ -122,7 +122,7 @@ const LicenseManagement = () => {
             setActiveKey(null);
             setLicenseKey("");
             setBlockedDevices([]);
-            showStatus("success", "License removed", "Orpheus has been deactivated on this device.");
+            showStatus("success", "License removed", "ColorUI has been deactivated on this device.");
         }
         finally {
             setLoading("idle");
@@ -199,7 +199,7 @@ const LicenseManagement = () => {
                 }, children: [_jsxs("div", { style: {
                             display: "flex", alignItems: "center",
                             justifyContent: "space-between", marginBottom: 18,
-                        }, children: [_jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [_jsx("svg", { width: "17", height: "17", viewBox: "0 0 24 24", fill: "none", children: _jsx("path", { d: "M8.6 22.5L6.7 19.3L3.1 18.5L3.45 14.8L1 12L3.45 9.2L3.1 5.5L6.7 4.7L8.6 1.5L12 2.95L15.4 1.5L17.3 4.7L20.9 5.5L20.55 9.2L23 12L20.55 14.8L20.9 18.5L17.3 19.3L15.4 22.5L12 21.05L8.6 22.5ZM10.95 15.55L16.6 9.9L15.2 8.45L10.95 12.7L8.8 10.6L7.4 12L10.95 15.55Z", fill: "#C67100" }) }), _jsx("span", { style: { fontSize: 14, fontWeight: 700, color: t.text }, children: "Orpheus" })] }), _jsx("span", { style: { fontSize: 11, color: t.sub }, children: "License" })] }), !activeKey && (_jsxs(_Fragment, { children: [_jsx("div", { style: {
+                        }, children: [_jsxs("div", { style: { display: "flex", alignItems: "center", gap: 8 }, children: [_jsx("span", { style: { fontSize: 14, fontWeight: 700, color: t.text }, children: "ColorUI" }), _jsx("svg", { width: "17", height: "17", viewBox: "0 0 24 24", fill: "none", children: _jsx("path", { d: "M8.6 22.5L6.7 19.3L3.1 18.5L3.45 14.8L1 12L3.45 9.2L3.1 5.5L6.7 4.7L8.6 1.5L12 2.95L15.4 1.5L17.3 4.7L20.9 5.5L20.55 9.2L23 12L20.55 14.8L20.9 18.5L17.3 19.3L15.4 22.5L12 21.05L8.6 22.5ZM10.95 15.55L16.6 9.9L15.2 8.45L10.95 12.7L8.8 10.6L7.4 12L10.95 15.55Z", fill: "#fff" }) })] }), _jsx("span", { style: { fontSize: 11, color: t.sub }, children: "License" })] }), !activeKey && (_jsxs(_Fragment, { children: [_jsx("div", { style: {
                                     fontSize: 10, fontWeight: 600, letterSpacing: "0.08em",
                                     textTransform: "uppercase", color: t.sub, marginBottom: 9,
                                 }, children: "License key" }), _jsx("input", { value: licenseKey, onChange: (e) => setLicenseKey(e.target.value), placeholder: "XXXX-XXXX-XXXX-XXXX", disabled: isBusy, style: {

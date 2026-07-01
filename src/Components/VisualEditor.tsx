@@ -17,6 +17,7 @@ import Switch from '../UI-Models/Switch';
 import { SingleFocusLists, ListData } from './../UI-Models/SingleListItem';
 import { ExportElement } from './ExportElement';
 import AskAI from './AskAI';
+import Visualizer from './Visualizer';
 import { motion } from "framer-motion";
 
 
@@ -1766,6 +1767,9 @@ const VisualEditor: React.FC<ChildProps> = ({
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
     color: 'transparent',
+    position:'absolute',
+    top:'150px',
+    left:'127px'
   };
 
   // 3. Filter listsData before passing to SingleFocusLists:
@@ -2245,6 +2249,8 @@ const btnStyle = (align: string): React.CSSProperties => ({
 const [hideThings, sethideThings] = useState(true)
 const [colorPalette, setColorPalette] = useState<string[]>([]);
 
+const [showColorsPaletteGenerator, setshowColorsPaletteGenerator] = useState(false)
+
 return (
     <motion.div 
     initial={{
@@ -2392,7 +2398,46 @@ return (
    </Tippy>
 
 <div style={styleH1}>
-          ColorUI{' '}
+         <div> ColorUI{' '}</div>
+         <div 
+         onMouseEnter={(e)=>{
+          
+         }}
+
+         onClick={()=>{
+          const host = document.getElementById("__EXT_HOST__COLORUI");
+    const container = host?.shadowRoot?.querySelector("div");
+
+    if (host && container) {
+     
+
+      const appContainer = host
+
+      if (appContainer) {
+
+        if(showColorsPaletteGenerator){
+          appContainer.style.transition = 'all 0.9s ease-in-out';
+        appContainer.style.width = '350px';
+
+        }else{
+          appContainer.style.transition = 'all 0.9s ease-in-out';
+          appContainer.style.width = '700px';
+        }
+
+        
+        // appContainer.style.height= '900px'
+
+
+      }
+    
+    }
+
+          setshowColorsPaletteGenerator(pre=>!pre)
+
+
+         }}
+         style={{fontSize:'11px',background:'none',fontWeight:'500',color:'#3b82f6',cursor:'pointer'}}>Generate palette ?</div>
+
     
         </div>
 </div>
@@ -2414,13 +2459,17 @@ return (
 
       
 
-     {isActive?'': <ColorSelector  colors={colors} setColors={setColors} pickColorState={pickColorState}/>}
+     {showColorsPaletteGenerator? '':<ColorSelector  colors={colors} setColors={setColors} pickColorState={pickColorState}/>}
 
 
-     {/* <Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  /> */}
+{showColorsPaletteGenerator?    
+<div>
+<Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  />
+<Visualizer colorPalette={colorPalette}   />
+</div>
+:''}
 
-
-{isActive?'':
+{showColorsPaletteGenerator?'':
   <Tippy
   content={<span   style={{
     color: "#EAEAEA",

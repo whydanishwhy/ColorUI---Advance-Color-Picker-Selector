@@ -1,7 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import LisenceManagement from './LisenceManagement';
-import Switch from '../UI-Models/Switch';
 import { baseColor } from '../UI-Models/Constant';
 import { motion } from "framer-motion";
 const Setting = () => {
@@ -37,17 +36,7 @@ const Setting = () => {
         }, style: {
             animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
             transformOrigin: "left",
-        }, children: [_jsx(LisenceManagement, {}), _jsxs("div", { children: [_jsxs("div", { style: {
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            padding: '20px',
-                            alignItems: 'center'
-                        }, children: [_jsx("div", { children: "Disable Effect on Media :" }), _jsx(Switch, { color: baseColor, checked: disabledOnMedia, onChange: () => setDisabledOnMedia(prev => !prev) })] }), _jsxs("div", { style: {
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            padding: '20px',
-                            alignItems: 'center'
-                        }, children: [_jsx("div", { children: "open Picker on run :" }), _jsx(Switch, { color: baseColor, checked: openPickerOnRun, onChange: () => setOpenPickerOnRun(prev => !prev) })] })] }), _jsxs("div", { style: {
+        }, children: [_jsx(LisenceManagement, {}), _jsx("div", {}), _jsxs("div", { style: {
                     width: "300px",
                     padding: "24px",
                     borderRadius: "16px",

@@ -1,4 +1,6 @@
 import React, { useMemo } from "react";
+import { motion } from "framer-motion";
+
 
 // ─────────────────────────────────────────────────────────────────
 //  TYPES
@@ -609,7 +611,26 @@ const Visualizer: React.FC<VisualizerProps> = ({ colorPalette }) => {
       : highlight.hex;
 
   return (
-    <div style={{ width: "700px", boxSizing: "border-box" }}>
+    <motion.div
+    initial={{
+      opacity: 0,
+      y: 20,
+      scale: 0.96
+    }}
+    animate={{
+      opacity: 1,
+      y: 0,
+      scale: 1
+    }}
+
+    transition={{
+      duration: 0.6,
+      delay: 0.4,
+      ease: "easeOut",
+    }}
+    
+    
+    style={{ width: "700px", boxSizing: "border-box" }}>
       {/* ── HERO WRAPPER ─────────────────────────────────── */}
       <div
         style={{
@@ -692,7 +713,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ colorPalette }) => {
           <AbstractGraphic tokens={tokens} />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

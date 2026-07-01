@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Visualizer from "./Visualizer";
+import { motion } from "framer-motion";
 
 type RGB = {
   r: number;
@@ -27,6 +28,7 @@ type ColorScheme =
 type GeneratorProps = {
   colorPalette: string[] ;
   setColorPalette: React.Dispatch<React.SetStateAction<string[]>>;
+  showVisualizer:boolean;
 };
 
 // Utility functions
@@ -208,6 +210,7 @@ const PaletteOut: number[] = [1, 2, 3, 4, 5];
 const Generator: React.FC<GeneratorProps> = ({
   setColorPalette,
   colorPalette,
+  showVisualizer
 }) => {
   const [lockedColors, setLockedColors] = useState<LockedColor[]>([]);
   const [colorScheme, setColorScheme] =
@@ -333,12 +336,32 @@ const Generator: React.FC<GeneratorProps> = ({
 
   return (
     <>
-      <div
-        style={{
+      <motion.div
+    
+     initial={{
+       opacity: 0,
+       y: 20,
+       scale: 0.96
+     }}
+     animate={{
+       opacity: 1,
+       y: 0,
+       scale: 1
+     }}
+ 
+     transition={{
+       duration: 0.6,
+       delay: 0.2,
+       ease: "easeOut",
+     }}
+
+style={{
       
-          width:'100%',
+          width:showVisualizer?'30%':'100%',
           boxSizing:'border-box',
-          height:'200px'
+          height:showVisualizer ?'40px':'200pX',
+          transition: "width 0.4s ease, height 0.4s ease",
+
 
         }}
       >
@@ -438,13 +461,14 @@ const Generator: React.FC<GeneratorProps> = ({
             marginTop: "10px",
             zIndex:888,
             position:'fixed',
-            top:'20px'
+            bottom:'20px',
+            left:'50%'
           }}
           onClick={gen}
         >
           Generate Palette
         </button>
-      </div>
+      </motion.div>
     </>
   );
 };

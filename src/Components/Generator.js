@@ -1,5 +1,6 @@
 import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 // Utility functions
 function hexToRgb(hex) {
     if (hex[0] === "#")
@@ -136,7 +137,7 @@ function ContrastCheck(hexColor) {
     return luminance > 0.5 ? "black" : "white";
 }
 const PaletteOut = [1, 2, 3, 4, 5];
-const Generator = ({ setColorPalette, colorPalette, }) => {
+const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
     const [lockedColors, setLockedColors] = useState([]);
     const [colorScheme, setColorScheme] = useState("default");
     const [showAddIcon, setShowAddIcon] = useState(0);
@@ -225,10 +226,23 @@ const Generator = ({ setColorPalette, colorPalette, }) => {
     const showFilters = () => {
         setFilters((prev) => (prev ? 0 : 1));
     };
-    return (_jsx(_Fragment, { children: _jsxs("div", { style: {
-                width: '100%',
+    return (_jsx(_Fragment, { children: _jsxs(motion.div, { initial: {
+                opacity: 0,
+                y: 20,
+                scale: 0.96
+            }, animate: {
+                opacity: 1,
+                y: 0,
+                scale: 1
+            }, transition: {
+                duration: 0.6,
+                delay: 0.2,
+                ease: "easeOut",
+            }, style: {
+                width: showVisualizer ? '30%' : '100%',
                 boxSizing: 'border-box',
-                height: '200px'
+                height: showVisualizer ? '40px' : '200pX',
+                transition: "width 0.4s ease, height 0.4s ease",
             }, children: [_jsx("div", { ref: colorPaletteAnimate, style: {
                         display: "flex",
                         border: "1px solid #242424",
@@ -266,7 +280,8 @@ const Generator = ({ setColorPalette, colorPalette, }) => {
                         marginTop: "10px",
                         zIndex: 888,
                         position: 'fixed',
-                        top: '20px'
+                        bottom: '20px',
+                        left: '50%'
                     }, onClick: gen, children: "Generate Palette" })] }) }));
 };
 export default Generator;

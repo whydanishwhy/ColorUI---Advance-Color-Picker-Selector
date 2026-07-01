@@ -1278,6 +1278,7 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
     const [hideThings, sethideThings] = useState(true);
     const [colorPalette, setColorPalette] = useState([]);
     const [showColorsPaletteGenerator, setshowColorsPaletteGenerator] = useState(false);
+    const [showVisualizer, setshowVisualizer] = useState(false);
     return (_jsxs(motion.div, { initial: {
             opacity: 0,
             y: 20,
@@ -1357,7 +1358,32 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                                 boxShadow: "0 4px 10px rgba(0,0,0,0.4)",
                                                 animation: "ss-popIn .22s cubic-bezier(0.34,1.56,0.64,1)",
                                                 transformOrigin: "top",
-                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), _jsxs("div", { style: styleH1, children: [_jsxs("div", { children: [" ColorUI", ' '] }), _jsx("div", { onMouseEnter: (e) => {
+                                            }, children: _jsx(X, { style: { cursor: 'pointer' }, color: '#ffffff', size: 20 }) }) : _jsx("div", {}), "     "] }) }), showColorsPaletteGenerator ?
+                            _jsx("div", { style: {
+                                    position: 'absolute',
+                                    top: '20px',
+                                    left: '20px'
+                                }, onClick: () => {
+                                    var _a;
+                                    const host = document.getElementById("__EXT_HOST__COLORUI");
+                                    const container = (_a = host === null || host === void 0 ? void 0 : host.shadowRoot) === null || _a === void 0 ? void 0 : _a.querySelector("div");
+                                    if (host && container) {
+                                        const appContainer = host;
+                                        if (appContainer) {
+                                            if (showColorsPaletteGenerator) {
+                                                appContainer.style.transition = 'all 0.9s ease-in-out';
+                                                appContainer.style.width = '350px';
+                                            }
+                                            else {
+                                                appContainer.style.transition = 'all 0.9s ease-in-out';
+                                                appContainer.style.width = '700px';
+                                            }
+                                        }
+                                    }
+                                    setshowColorsPaletteGenerator(false);
+                                    setshowVisualizer(false);
+                                }, children: "X" })
+                            : '', showColorsPaletteGenerator ? '' : _jsxs("div", { style: styleH1, children: [_jsxs("div", { children: [" ColorUI", ' '] }), _jsx("div", { onMouseEnter: (e) => {
                                     }, onClick: () => {
                                         var _a;
                                         const host = document.getElementById("__EXT_HOST__COLORUI");
@@ -1373,12 +1399,13 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                                     appContainer.style.transition = 'all 0.9s ease-in-out';
                                                     appContainer.style.width = '700px';
                                                 }
-                                                // appContainer.style.height= '900px'
                                             }
                                         }
                                         setshowColorsPaletteGenerator(pre => !pre);
                                     }, style: { fontSize: '11px', background: 'none', fontWeight: '500', color: '#3b82f6', cursor: 'pointer' }, children: "Generate palette ?" })] })] }) }), showColorsPaletteGenerator ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), showColorsPaletteGenerator ?
-                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette }), _jsx(Visualizer, { colorPalette: colorPalette })] })
+                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette, showVisualizer: showVisualizer }), _jsx("button", { onClick: () => {
+                                setshowVisualizer(pre => !pre);
+                            }, children: "show visualizer" }), showVisualizer ? _jsx(Visualizer, { colorPalette: colorPalette }) : ''] })
                 : '', showColorsPaletteGenerator ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",

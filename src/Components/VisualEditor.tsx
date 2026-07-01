@@ -19,6 +19,7 @@ import { ExportElement } from './ExportElement';
 import AskAI from './AskAI';
 import Visualizer from './Visualizer';
 import { motion } from "framer-motion";
+import { div } from 'framer-motion/client';
 
 
 interface PanelProps {
@@ -2250,6 +2251,7 @@ const [hideThings, sethideThings] = useState(true)
 const [colorPalette, setColorPalette] = useState<string[]>([]);
 
 const [showColorsPaletteGenerator, setshowColorsPaletteGenerator] = useState(false)
+const [showVisualizer, setshowVisualizer] = useState(false)
 
 return (
     <motion.div 
@@ -2397,7 +2399,52 @@ return (
 
    </Tippy>
 
-<div style={styleH1}>
+{showColorsPaletteGenerator?
+
+<div
+style={{
+  position:'absolute',
+  top:'20px',
+  left:'20px'
+}}
+ onClick={()=>{
+  const host = document.getElementById("__EXT_HOST__COLORUI");
+const container = host?.shadowRoot?.querySelector("div");
+
+if (host && container) {
+
+
+const appContainer = host
+
+if (appContainer) {
+
+if(showColorsPaletteGenerator){
+  appContainer.style.transition = 'all 0.9s ease-in-out';
+appContainer.style.width = '350px';
+
+}else{
+  appContainer.style.transition = 'all 0.9s ease-in-out';
+  appContainer.style.width = '700px';
+}
+
+
+}
+
+}
+
+  setshowColorsPaletteGenerator(false)
+  setshowVisualizer(false)
+
+
+
+ }}
+>
+X
+</div>
+
+:''}
+
+{showColorsPaletteGenerator?'':<div style={styleH1}>
          <div> ColorUI{' '}</div>
          <div 
          onMouseEnter={(e)=>{
@@ -2424,9 +2471,6 @@ return (
           appContainer.style.width = '700px';
         }
 
-        
-        // appContainer.style.height= '900px'
-
 
       }
     
@@ -2439,7 +2483,7 @@ return (
          style={{fontSize:'11px',background:'none',fontWeight:'500',color:'#3b82f6',cursor:'pointer'}}>Generate palette ?</div>
 
     
-        </div>
+        </div>}
 </div>
         
         
@@ -2464,8 +2508,13 @@ return (
 
 {showColorsPaletteGenerator?    
 <div>
-<Generator setColorPalette={setColorPalette} colorPalette={colorPalette}  />
-<Visualizer colorPalette={colorPalette}   />
+<Generator setColorPalette={setColorPalette} colorPalette={colorPalette} showVisualizer={showVisualizer}  />
+<button
+onClick={()=>{
+  setshowVisualizer(pre=>!pre)
+}}
+>show visualizer</button>
+{showVisualizer?<Visualizer colorPalette={colorPalette}   />:''}
 </div>
 :''}
 

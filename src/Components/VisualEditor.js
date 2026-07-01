@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { useEffect, useMemo, useState, useRef } from 'react';
 import ColorInput from '../UI-Models/ColorInput';
 import DragNumberInput from '../UI-Models/DragNumberInput';
-import { Box, Camera, ALargeSmall, SquareRoundCorner, PenTool, TextAlignStart, TextAlignJustify, TextAlignEnd, Wallpaper, Ban, X, MessageCircleQuestionMark, PanelRightDashed, Eclipse, FileInput, Stone, Tag, SquareMousePointer } from 'lucide-react';
+import { Box, Camera, ALargeSmall, SquareRoundCorner, ChevronDown, ChevronUp, PenTool, TextAlignStart, TextAlignJustify, TextAlignEnd, Wallpaper, Ban, X, MessageCircleQuestionMark, PanelRightDashed, Eclipse, FileInput, Stone, Tag, SquareMousePointer } from 'lucide-react';
 import Tippy from '@tippyjs/react';
 import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
@@ -1403,9 +1403,9 @@ const VisualEditor = ({ element, isDragging, setIsDragging, isDraggingRef, setIs
                                         }
                                         setshowColorsPaletteGenerator(pre => !pre);
                                     }, style: { fontSize: '11px', background: 'none', fontWeight: '500', color: '#3b82f6', cursor: 'pointer' }, children: "Generate palette ?" })] })] }) }), showColorsPaletteGenerator ? '' : _jsx(ColorSelector, { colors: colors, setColors: setColors, pickColorState: pickColorState }), showColorsPaletteGenerator ?
-                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette, showVisualizer: showVisualizer }), _jsx("button", { onClick: () => {
+                _jsxs("div", { children: [_jsx(Generator, { setColorPalette: setColorPalette, colorPalette: colorPalette, showVisualizer: showVisualizer }), _jsxs("div", { onClick: () => {
                                 setshowVisualizer(pre => !pre);
-                            }, children: "show visualizer" }), showVisualizer ? _jsx(Visualizer, { colorPalette: colorPalette }) : ''] })
+                            }, children: [showVisualizer ? _jsx(ChevronDown, {}) : '', showVisualizer ? '' : _jsx(ChevronUp, {})] }), showVisualizer ? _jsx(Visualizer, { colorPalette: colorPalette }) : ''] })
                 : '', showColorsPaletteGenerator ? '' :
                 _jsx(Tippy, { content: _jsx("span", { style: {
                             color: "#EAEAEA",

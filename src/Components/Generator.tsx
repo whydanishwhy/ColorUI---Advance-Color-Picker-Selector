@@ -357,10 +357,12 @@ const Generator: React.FC<GeneratorProps> = ({
 
 style={{
       
-          width:showVisualizer?'30%':'100%',
+          // width:showVisualizer?'30%':'100%',
           boxSizing:'border-box',
           height:showVisualizer ?'40px':'200pX',
+
           transition: "width 0.4s ease, height 0.4s ease",
+          marginLeft:showVisualizer?'20px':''
 
 
         }}
@@ -391,6 +393,7 @@ style={{
             width: "100%",
             height: "100%",
             boxSizing: "border-box",
+            gap:showVisualizer?'20px':'0px'
           }}
         >
           {colorPalette.map((color: string, index: number) => (
@@ -398,8 +401,8 @@ style={{
               key={index}
               className="ello"
               style={{
-                height: "100%",
-                width: "100%",
+                height: showVisualizer?'30px':"100%",
+                width: showVisualizer?'30px':"100%",
                 backgroundColor: color,
                 color: ContrastCheck(color),
                 display: "flex",
@@ -409,6 +412,9 @@ style={{
                 padding: "9px",
                 boxSizing: "border-box",
                 textAlign: "center",
+                border:showVisualizer?'1px solid gray':'',
+                borderRadius:showVisualizer?'100%':'',
+                transition: `height 0.3s ease,width 0.5s ease, ${showVisualizer? 'border-radius 2s ease' : 'border-radius 0.5s ease'}`,
               }}
               onMouseEnter={addMoreColors}
               onMouseLeave={mouseout}
@@ -417,10 +423,10 @@ style={{
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "20px",
+                  gap: "10px",
                 }}
               >
-                <span
+                {showVisualizer?'':<span
                   style={{ cursor: "pointer" }}
                   onClick={() => lockBtn(index, color)}
                 >
@@ -430,7 +436,7 @@ style={{
                   )
                     ? " 🔒"
                     : ""}
-                </span>
+                </span>}
 
                 <input
                   type="color"
@@ -446,6 +452,7 @@ style={{
                     height: "10px",
                     border: "none",
                     padding: 0,
+                    opacity:showVisualizer?0:1
                   }}
                 />
               </div>

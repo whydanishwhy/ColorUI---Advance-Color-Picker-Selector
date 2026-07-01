@@ -624,8 +624,8 @@ const Visualizer: React.FC<VisualizerProps> = ({ colorPalette }) => {
     }}
 
     transition={{
-      duration: 0.6,
-      delay: 0.4,
+      duration: 0.4,
+      // delay: 0.4,
       ease: "easeOut",
     }}
     

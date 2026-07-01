@@ -356,8 +356,8 @@ const Visualizer = ({ colorPalette }) => {
             y: 0,
             scale: 1
         }, transition: {
-            duration: 0.6,
-            delay: 0.4,
+            duration: 0.4,
+            // delay: 0.4,
             ease: "easeOut",
         }, style: { width: "700px", boxSizing: "border-box" }, children: _jsxs("div", { style: Object.assign(Object.assign({}, S.wrapper(heroBg)), { background: heroBg }), children: [_jsx("div", { style: S.blob(accent.hex, 480, "-140px", "-100px", 90, 0.38) }), _jsx("div", { style: S.blob(highlight.hex, 380, "auto", "auto", 80, 0.32) }), _jsx("div", { style: Object.assign({}, S.blob(surface.hex, 300, "40%", "32%", 70, 0.28)) }), _jsx("div", { style: S.gridOverlay() }), _jsxs("div", { style: S.contentCol(), children: [_jsxs("div", { style: S.eyebrow(eyebrowColor), children: [_jsx("span", { style: S.eyebrowLine(eyebrowColor) }), "Design with purpose"] }), _jsxs("h1", { style: S.h1(headingColor), children: ["Colors that speak", _jsx("br", {}), "before words do."] }), _jsx("p", { style: S.p(mutedText), children: "Every hue tells a story. This palette balances warmth and contrast \u2014 crafted so your brand feels cohesive across every surface it touches." }), _jsxs("div", { style: S.btnRow(), children: [_jsxs("button", { style: S.btnPrimary(accent.hex, accentText), children: ["Get started", _jsx("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.5", strokeLinecap: "round", strokeLinejoin: "round", children: _jsx("path", { d: "M5 12h14M12 5l7 7-7 7" }) })] }), _jsx("button", { style: S.btnSecondary(headingColor, headingColor), children: "View examples" })] }), _jsx("div", { style: S.pillRow(), children: colorPalette.map((hex) => (_jsxs("div", { style: S.pill(bg.hex, headingColor), children: [_jsx("span", { style: S.pillDot(hex) }), hex.toUpperCase()] }, hex))) })] }), _jsx("div", { style: S.graphicCol(), children: _jsx(AbstractGraphic, { tokens: tokens }) })] }) }));
 };

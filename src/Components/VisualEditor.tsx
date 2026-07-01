@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState,useRef } from 'react';
 import SearchBar from '../UI-Models/SearchBar';
 import ColorInput from '../UI-Models/ColorInput';
 import DragNumberInput from '../UI-Models/DragNumberInput';
-import { Box, Camera, ALargeSmall, SquareRoundCorner,Minus, PenTool, WholeWord,Bold,TextAlignStart ,TextInitial,AlignVerticalSpaceAround,TextAlignJustify,TextAlignEnd, Wallpaper,Ban, X,MessageCircleQuestionMark,PanelRightDashed,Eclipse, FileInput,Stone,Tag,SquareMousePointer, ChevronRight} from 'lucide-react';
+import { Box, Camera, ALargeSmall, SquareRoundCorner,ChevronDown, ChevronUp,PenTool, WholeWord,Bold,TextAlignStart ,TextInitial,AlignVerticalSpaceAround,TextAlignJustify,TextAlignEnd, Wallpaper,Ban, X,MessageCircleQuestionMark,PanelRightDashed,Eclipse, FileInput,Stone,Tag,SquareMousePointer, ChevronRight} from 'lucide-react';
 import Tippy from '@tippyjs/react';
 import ColorUI from './ColorUI';
 import ScreenShot from './ScreenShot';
@@ -2509,11 +2509,15 @@ X
 {showColorsPaletteGenerator?    
 <div>
 <Generator setColorPalette={setColorPalette} colorPalette={colorPalette} showVisualizer={showVisualizer}  />
-<button
+<div
 onClick={()=>{
   setshowVisualizer(pre=>!pre)
 }}
->show visualizer</button>
+>
+{showVisualizer?<ChevronDown />:''}
+{showVisualizer?'':<ChevronUp  />}
+
+</div>
 {showVisualizer?<Visualizer colorPalette={colorPalette}   />:''}
 </div>
 :''}

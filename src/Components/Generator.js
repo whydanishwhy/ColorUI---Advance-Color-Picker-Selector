@@ -239,19 +239,22 @@ const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
                 delay: 0.2,
                 ease: "easeOut",
             }, style: {
-                width: showVisualizer ? '30%' : '100%',
+                // width:showVisualizer?'30%':'100%',
                 boxSizing: 'border-box',
                 height: showVisualizer ? '40px' : '200pX',
+                borderRadius: showVisualizer ? '100%' : '',
                 transition: "width 0.4s ease, height 0.4s ease",
+                marginLeft: showVisualizer ? '20px' : ''
             }, children: [_jsx("div", { ref: colorPaletteAnimate, style: {
                         display: "flex",
                         border: "1px solid #242424",
                         width: "100%",
                         height: "100%",
                         boxSizing: "border-box",
+                        gap: showVisualizer ? '20px' : '0px'
                     }, children: colorPalette.map((color, index) => (_jsx("div", { className: "ello", style: {
-                            height: "100%",
-                            width: "100%",
+                            height: showVisualizer ? '30px' : "100%",
+                            width: showVisualizer ? '30px' : "100%",
                             backgroundColor: color,
                             color: ContrastCheck(color),
                             display: "flex",
@@ -261,11 +264,14 @@ const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
                             padding: "9px",
                             boxSizing: "border-box",
                             textAlign: "center",
+                            border: showVisualizer ? '1px solid gray' : '',
+                            borderRadius: showVisualizer ? '100%' : '',
+                            transition: `height 0.3s ease,width 0.5s ease, ${showVisualizer ? 'border-radius 2s ease' : 'border-radius 0.5s ease'}`,
                         }, onMouseEnter: addMoreColors, onMouseLeave: mouseout, children: _jsxs("div", { style: {
                                 display: "flex",
                                 flexDirection: "column",
-                                gap: "20px",
-                            }, children: [_jsxs("span", { style: { cursor: "pointer" }, onClick: () => lockBtn(index, color), children: [color, lockedColors.some((lock) => lock.index === index)
+                                gap: "10px",
+                            }, children: [showVisualizer ? '' : _jsxs("span", { style: { cursor: "pointer" }, onClick: () => lockBtn(index, color), children: [color, lockedColors.some((lock) => lock.index === index)
                                             ? " 🔒"
                                             : ""] }), _jsx("input", { type: "color", value: color, onChange: (e) => handleColorChange(index, e.target.value), style: {
                                         cursor: "pointer",
@@ -273,6 +279,7 @@ const Generator = ({ setColorPalette, colorPalette, showVisualizer }) => {
                                         height: "10px",
                                         border: "none",
                                         padding: 0,
+                                        opacity: showVisualizer ? 0 : 1
                                     } })] }) }, index))) }), _jsx("button", { style: {
                         cursor: "pointer",
                         background: "#242424",
